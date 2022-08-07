@@ -1,7 +1,6 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-import fetch from "node-fetch";
 app.use(express.json());
 app.use(cors());
 app.get("/doublon-enrollement", async (req, res) => {
