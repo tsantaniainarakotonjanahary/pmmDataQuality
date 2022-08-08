@@ -8,6 +8,7 @@ app.use(cors());
 app.get("/doublon-enrollement", async (req, res) => {
   var query = req.query;
   var username = query.username; //"Nosybe"
+  console.log(username);
   var password = query.password; //"2021@Covax"
   var periode = query.periode; //"LAST_12_MONTHS"
   var idOrgUnit = query.idOrgUnit; //"A8UMJuP8iI3"
