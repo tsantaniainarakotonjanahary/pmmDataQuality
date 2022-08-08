@@ -216,35 +216,35 @@ app.get("/NA-evenement", async (req, res) => {
     var NA = [];
     for (var i = 0; i < height; i++) {
       if (
+        data.rows[i][12].replace(/\s/g, "").trim().length == 0 ||
         data.rows[i][13].replace(/\s/g, "").trim().length == 0 ||
-        data.rows[i][14].replace(/\s/g, "").trim().length == 0 ||
-        data.rows[i][15].replace(/\s/g, "").trim().length == 0
+        data.rows[i][14].replace(/\s/g, "").trim().length == 0
       ) {
         if (
-          data.rows[i][14].replace(/\s/g, "").trim() &&
+          data.rows[i][13].replace(/\s/g, "").trim() &&
           parseInt(data.rows[i][14].replace(/\s/g, "").trim(), 10) == 1
         ) {
-          data.rows[i][14] = "Agent de santé";
+          data.rows[i][13] = "Agent de santé";
         } else if (
-          data.rows[i][14].replace(/\s/g, "").trim() &&
+          data.rows[i][13].replace(/\s/g, "").trim() &&
           parseInt(data.rows[i][14].replace(/\s/g, "").trim(), 10) == 2
         ) {
-          data.rows[i][14] = "Force de l'ordre";
+          data.rows[i][13] = "Force de l'ordre";
         } else if (
-          data.rows[i][14].replace(/\s/g, "").trim() &&
+          data.rows[i][13].replace(/\s/g, "").trim() &&
           parseInt(data.rows[i][14].replace(/\s/g, "").trim(), 10) == 3
         ) {
-          data.rows[i][14] = "Personne âgée";
+          data.rows[i][13] = "Personne âgée";
         } else if (
-          data.rows[i][14].replace(/\s/g, "").trim() &&
+          data.rows[i][13].replace(/\s/g, "").trim() &&
           parseInt(data.rows[i][14].replace(/\s/g, "").trim(), 10) == 4
         ) {
-          data.rows[i][14] = "Travailleurs sociaux";
+          data.rows[i][13] = "Travailleurs sociaux";
         } else if (
-          data.rows[i][14].replace(/\s/g, "").trim() &&
+          data.rows[i][13].replace(/\s/g, "").trim() &&
           parseInt(data.rows[i][14].replace(/\s/g, "").trim(), 10) == 5
         ) {
-          data.rows[i][14] = "Autres";
+          data.rows[i][13] = "Autres";
         }
         NA.push(data.rows[i]);
       }
