@@ -216,9 +216,9 @@ app.get("/NA-evenement", async (req, res) => {
     var NA = [];
     for (var i = 0; i < height; i++) {
       if (
-        data.rows[i][1].replace(/\s/g, "").trim().length == 0 ||
-        data.rows[i][12].replace(/\s/g, "").trim().length == 0 ||
-        data.rows[i][13].replace(/\s/g, "").trim().length == 0
+        data.rows[i][13].replace(/\s/g, "").trim().length == 0 ||
+        data.rows[i][14].replace(/\s/g, "").trim().length == 0 ||
+        data.rows[i][15].replace(/\s/g, "").trim().length == 0
       ) {
         NA.push(data.rows[i]);
       }
