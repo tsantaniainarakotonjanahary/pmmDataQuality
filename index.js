@@ -132,7 +132,7 @@ app.get("/doublon-evenement", async (req, res) => {
   var outputType = query.outputType; //"ENROLLMENT"
   var sort = query.sort; //"enrollmentDate"
   var columns =
-    "dimension=a1jCssI2LkW.eNRjVGxVL6l&dimension=a1jCssI2LkW.SB1IHYu2xQT&dimension=a1jCssI2LkW.NI0QRzJvQ0k&dimension=a1jCssI2LkW.LY2bDXpNvS7&dimension=a1jCssI2LkW.oindugucx72&dimension=a1jCssI2LkW.KSr2yTdu1AI&dimension=a1jCssI2LkW.Ewi7FUfcHAD&dimension=a1jCssI2LkW.fctSQp5nAYl";
+    "dimension=a1jCssI2LkW.KSr2yTdu1AI&dimension=a1jCssI2LkW.bbnyNYD1wgS&dimension=a1jCssI2LkW.LUIsbsm3okG&dimension=a1jCssI2LkW.eNRjVGxVL6l&dimension=a1jCssI2LkW.SB1IHYu2xQT&dimension=a1jCssI2LkW.QCwlZedwacH";
   var credentials = Buffer.from(username + ":" + password).toString("base64");
   var auth = { Authorization: `Basic ${credentials}` };
   var url = "https://covax.vaksiny.gov.mg/api/29/analytics/";
@@ -150,7 +150,7 @@ app.get("/doublon-evenement", async (req, res) => {
     var keys = [];
     for (var i = 0; i < height; i++) {
       keys.push(
-        (data.rows[i][13] + data.rows[i][16] + data.rows[i][17])
+        (data.rows[i][14] + data.rows[i][15] + data.rows[i][16])
           .replace(/\s/g, "")
           .toUpperCase()
       );
@@ -162,7 +162,7 @@ app.get("/doublon-evenement", async (req, res) => {
     for (var i = 0; i < height; i++) {
       if (
         duplicateKey.includes(
-          (data.rows[i][13] + data.rows[i][16] + data.rows[i][17])
+          (data.rows[i][14] + data.rows[i][15] + data.rows[i][16])
             .replace(/\s/g, "")
             .toUpperCase()
         )
@@ -174,8 +174,8 @@ app.get("/doublon-evenement", async (req, res) => {
       statusText: statusText,
       status: status,
       data: duplicateValue.sort((a, b) =>
-        (a[13] + a[16] + a[17]).replace(/\s/g, "").toUpperCase() >
-        (b[13] + b[16] + b[17]).replace(/\s/g, "").toUpperCase()
+        (a[14] + a[15] + a[16]).replace(/\s/g, "").toUpperCase() >
+        (b[14] + b[15] + b[16]).replace(/\s/g, "").toUpperCase()
           ? 1
           : -1
       ),
