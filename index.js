@@ -150,7 +150,7 @@ app.get("/doublon-evenement", async (req, res) => {
     var keys = [];
     for (var i = 0; i < height; i++) {
       keys.push(
-        (data.rows[i][14] + data.rows[i][15] + data.rows[i][16])
+        (data.rows[i][13] + data.rows[i][14] + data.rows[i][15])
           .replace(/\s/g, "")
           .toUpperCase()
       );
@@ -162,7 +162,7 @@ app.get("/doublon-evenement", async (req, res) => {
     for (var i = 0; i < height; i++) {
       if (
         duplicateKey.includes(
-          (data.rows[i][14] + data.rows[i][15] + data.rows[i][16])
+          (data.rows[i][13] + data.rows[i][14] + data.rows[i][15])
             .replace(/\s/g, "")
             .toUpperCase()
         )
@@ -174,8 +174,8 @@ app.get("/doublon-evenement", async (req, res) => {
       statusText: statusText,
       status: status,
       data: duplicateValue.sort((a, b) =>
-        (a[14] + a[15] + a[16]).replace(/\s/g, "").toUpperCase() >
-        (b[14] + b[15] + b[16]).replace(/\s/g, "").toUpperCase()
+        (a[13] + a[14] + a[15]).replace(/\s/g, "").toUpperCase() >
+        (b[13] + b[14] + b[15]).replace(/\s/g, "").toUpperCase()
           ? 1
           : -1
       ),
@@ -259,6 +259,20 @@ function URLStructure(
     outputType +
     "&desc=" +
     sort
+  );
+  console.log(
+    url +
+      sortie +
+      "/query/yDuAzyqYABS.json?dimension=pe:" +
+      periode +
+      "&dimension=ou:" +
+      idOrgUnit +
+      "&" +
+      columns +
+      "&stage=a1jCssI2LkW&displayProperty=NAME&outputType=" +
+      outputType +
+      "&desc=" +
+      sort
   );
 }
 
