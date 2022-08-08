@@ -220,17 +220,6 @@ app.get("/NA-evenement", async (req, res) => {
         data.rows[i][13].replace(/\s/g, "").trim().length == 0 ||
         data.rows[i][14].replace(/\s/g, "").trim().length == 0
       ) {
-        /*if (data.rows[i][13].replace(/\s/g, "").trim().equals("1")) {
-          data.rows[i][13] = "Agent de santé";
-        } else if (data.rows[i][13].replace(/\s/g, "").trim().equals("2")) {
-          data.rows[i][13] = "Force de l'ordre";
-        } else if (data.rows[i][13].replace(/\s/g, "").trim().equals("3")) {
-          data.rows[i][13] = "Personne âgée";
-        } else if (data.rows[i][13].replace(/\s/g, "").trim().equals("4")) {
-          data.rows[i][13] = "Travailleurs sociaux";
-        } else if (data.rows[i][13].replace(/\s/g, "").trim().equals("5")) {
-          data.rows[i][13] = "Autres";
-        }*/
         NA.push(data.rows[i]);
       }
     }
