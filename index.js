@@ -72,6 +72,7 @@ app.get("/doublon-enrollement", async (req, res) => {
         : -1
     );
     var retour = [];
+    retour.push([]);
     for (var i = 0; i < sortedDuplicateValue.length; i++) {
       if (sortedDuplicateValue[i][13].replace(/\s/g, "").trim().length != 0) {
         if (
