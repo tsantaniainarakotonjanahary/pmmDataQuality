@@ -279,12 +279,20 @@ app.get("/doublon-evenement", async (req, res) => {
             .toUpperCase()
         )
       ) {
-        duplicateValue.push(data.rows[i]);
+        duplicateValue.push([
+          data.rows[i][10],
+          data.rows[i][13],
+          data.rows[i][14],
+          data.rows[i][15],
+          data.rows[i][16],
+          data.rows[i][17],
+          data.rows[i][18],
+        ]);
       }
-    } /*
+    }
     var sorted = duplicateValue.sort((a, b) =>
-      (a[13] + a[14] + a[15]).replace(/\s/g, "").toUpperCase() >
-      (b[13] + b[14] + b[15]).replace(/\s/g, "").toUpperCase()
+      (a[1] + a[2] + a[3]).replace(/\s/g, "").toUpperCase() >
+      (b[1] + b[2] + b[3]).replace(/\s/g, "").toUpperCase()
         ? 1
         : -1
     );
@@ -307,7 +315,7 @@ app.get("/doublon-evenement", async (req, res) => {
     https: res.json({
       statusText: statusText,
       status: status,
-      data: duplicateValue,
+      data: sorted,
       headers: headers,
     });
   } else {
