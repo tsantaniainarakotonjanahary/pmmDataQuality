@@ -62,23 +62,6 @@ app.get("/doublon-enrollement", async (req, res) => {
             .toUpperCase()
         )
       ) {
-        if (data.rows[i][13].replace(/\s/g, "").trim().length != 0) {
-          if (parseInt(data.rows[i][13].replace(/\s/g, "").trim()) == 1) {
-            data.rows[i][13] = "Agent de santé";
-          }
-          if (parseInt(data.rows[i][13].replace(/\s/g, "").trim()) == 2) {
-            data.rows[i][13] = "Force de l'ordre";
-          }
-          if (parseInt(data.rows[i][13].replace(/\s/g, "").trim()) == 3) {
-            data.rows[i][13] = "Personne âgée";
-          }
-          if (parseInt(data.rows[i][13].replace(/\s/g, "").trim()) == 4) {
-            data.rows[i][13] = "Travailleurs sociaux";
-          }
-          if (parseInt(data.rows[i][13].replace(/\s/g, "").trim()) == 5) {
-            data.rows[i][13] = "Autres";
-          }
-        }
         duplicateValue.push(data.rows[i]);
       }
     }
@@ -90,6 +73,34 @@ app.get("/doublon-enrollement", async (req, res) => {
     );
     var retour = [];
     for (var i = 0; i < sortedDuplicateValue.length; i++) {
+      if (sortedDuplicateValue[i][13].replace(/\s/g, "").trim().length != 0) {
+        if (
+          parseInt(sortedDuplicateValue[i][13].replace(/\s/g, "").trim()) == 1
+        ) {
+          sortedDuplicateValue[i][13] = "Agent de santé";
+        }
+        if (
+          parseInt(sortedDuplicateValue[i][13].replace(/\s/g, "").trim()) == 2
+        ) {
+          sortedDuplicateValue[i][13] = "Force de l'ordre";
+        }
+        if (
+          parseInt(sortedDuplicateValue[i][13].replace(/\s/g, "").trim()) == 3
+        ) {
+          sortedDuplicateValue[i][13] = "Personne âgée";
+        }
+        if (
+          parseInt(sortedDuplicateValue[i][13].replace(/\s/g, "").trim()) == 4
+        ) {
+          sortedDuplicateValue[i][13] = "Travailleurs sociaux";
+        }
+        if (
+          parseInt(sortedDuplicateValue[i][13].replace(/\s/g, "").trim()) == 5
+        ) {
+          sortedDuplicateValue[i][13] = "Autres";
+        }
+      }
+
       retour.push([
         sortedDuplicateValue[i][7],
         sortedDuplicateValue[i][10],
