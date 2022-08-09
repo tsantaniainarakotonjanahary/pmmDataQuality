@@ -86,7 +86,7 @@ app.get("/doublon-enrollement", async (req, res) => {
         ? 1
         : -1
     );
-    var retour = [];
+    /*var retour = [];
     for (var i = 0; i < height; i++) {
       retour.push([
         sortedDuplicateValue.rows[i][7],
@@ -99,12 +99,12 @@ app.get("/doublon-enrollement", async (req, res) => {
         sortedDuplicateValue.rows[i][16],
         sortedDuplicateValue.rows[i][17],
       ]);
-    }
+    }*/
 
     https: res.json({
       statusText: statusText,
       status: status,
-      data: retour,
+      data: sortedDuplicateValue,
       headers: headers,
     });
   } else {
