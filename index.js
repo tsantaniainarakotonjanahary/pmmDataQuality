@@ -138,7 +138,7 @@ app.get("/NA-enrollement", async (req, res) => {
     https: res.json({
       statusText: statusText,
       status: status,
-      data: NA.sort((a, b) => (NA[0] > NA[0] ? 1 : -1)).unshift([
+      data: NA.sort((a, b) => (NA[0] > NA[0] ? 1 : -1)) /*.unshift([
         headers[7].column,
         headers[10].column,
         headers[11].column,
@@ -148,7 +148,7 @@ app.get("/NA-enrollement", async (req, res) => {
         headers[15].column,
         headers[16].column,
         headers[17].column,
-      ]),
+      ])*/,
       headers: headers,
     });
   } else {
