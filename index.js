@@ -239,23 +239,13 @@ app.get("/doublon-evenement", async (req, res) => {
     var data = await response.json();
     var headers = [
       "Unite d'organisation",
+      "Nom de vaccin",
+      "Numero de dose",
+      "Numero de lot",
+      "Type de cible",
       "Nom",
       "Prenom",
-      "Date de naissance",
-      "Type de cible",
-      "sexe",
-      "CODE_EPI",
-      "CIN",
-      "TEL",
-      "Unite d'organisation",
-      "Nom",
-      "Prenom",
-      "Date de naissance",
-      "Type de cible",
-      "sexe",
-      "CODE_EPI",
-      "CIN",
-      "TEL",
+      "EPI",
     ];
     var height = data.height;
     var keys = [];
@@ -297,21 +287,6 @@ app.get("/doublon-evenement", async (req, res) => {
         : -1
     );
 
-    /*var retour = [];
-    retour.push([]);
-    for (var i = 0; i < sorted.length; i++) {
-      retour.push([
-        sorted[i][10],
-        sorted[i][11],
-        sorted[i][12],
-        sorted[i][13],
-        sorted[i][14],
-        sorted[i][15],
-        sorted[i][16],
-        sorted[i][17],
-        sorted[i][18],
-      ]);
-    }*/
     https: res.json({
       statusText: statusText,
       status: status,
