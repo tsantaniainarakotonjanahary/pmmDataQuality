@@ -324,7 +324,25 @@ app.get("/NA-evenement", async (req, res) => {
   if (status == "200") {
     var data = await response.json();
     var height = data.height;
-    var headers = data.headers;
+    var headers = [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f",
+      "g",
+      "h",
+      "i",
+      "j",
+      "k",
+      "l",
+      "m",
+      "n",
+      "o",
+      "p",
+      "q",
+    ];
     var NA = [];
     for (var i = 0; i < height; i++) {
       if (
