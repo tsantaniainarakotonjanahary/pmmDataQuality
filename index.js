@@ -257,7 +257,7 @@ app.get("/doublon-evenement", async (req, res) => {
       "CIN",
       "TEL",
     ];
-    var height = data.height;
+    /*var height = data.height;
     var keys = [];
     for (var i = 0; i < height; i++) {
       keys.push(
@@ -307,7 +307,7 @@ app.get("/doublon-evenement", async (req, res) => {
     https: res.json({
       statusText: statusText,
       status: status,
-      data: sorted,
+      data: data.rows,
       headers: headers,
     });
   } else {
