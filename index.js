@@ -80,15 +80,31 @@ app.get("/doublon-enrollement", async (req, res) => {
         duplicateValue.push(data.rows[i]);
       }
     }
+    var sortedDuplicateValue = duplicateValue.sort((a, b) =>
+      (a[10] + a[11] + a[12]).replace(/\s/g, "").toUpperCase() >
+      (b[10] + b[11] + b[12]).replace(/\s/g, "").toUpperCase()
+        ? 1
+        : -1
+    );
+    var retour = [];
+    for (var i = 0; i < height; i++) {
+      retour.push([
+        sortedDuplicateValue.rows[i][7],
+        sortedDuplicateValue.rows[i][10],
+        sortedDuplicateValue.rows[i][11],
+        sortedDuplicateValue.rows[i][12],
+        sortedDuplicateValue.rows[i][13],
+        sortedDuplicateValue.rows[i][14],
+        sortedDuplicateValue.rows[i][15],
+        sortedDuplicateValue.rows[i][16],
+        sortedDuplicateValue.rows[i][17],
+      ]);
+    }
+
     https: res.json({
       statusText: statusText,
       status: status,
-      data: duplicateValue.sort((a, b) =>
-        (a[10] + a[11] + a[12]).replace(/\s/g, "").toUpperCase() >
-        (b[10] + b[11] + b[12]).replace(/\s/g, "").toUpperCase()
-          ? 1
-          : -1
-      ),
+      data: retour,
       headers: headers,
     });
   } else {
