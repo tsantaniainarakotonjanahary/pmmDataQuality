@@ -325,38 +325,37 @@ app.get("/NA-evenement", async (req, res) => {
     var data = await response.json();
     var height = data.height;
     var headers = [
-      "a",
-      "b",
-      "c",
-      "d",
-      "e",
-      "f",
-      "g",
-      "h",
-      "i",
-      "j",
-      "k",
-      "l",
-      "m",
-      "n",
-      "o",
-      "p",
-      "q",
+      "Unite d'organisation",
+      "Nom de vaccin",
+      "Numero de dose",
+      "Numero de lot",
+      "Nom",
+      "Prenom",
+      "CODE_EPI",
     ];
     var NA = [];
+    NA.push([]);
     for (var i = 0; i < height; i++) {
       if (
         data.rows[i][12].replace(/\s/g, "").trim().length == 0 ||
         data.rows[i][13].replace(/\s/g, "").trim().length == 0 ||
         data.rows[i][14].replace(/\s/g, "").trim().length == 0
       ) {
-        NA.push(data.rows[i]);
+        NA.push([
+          data.rows[i][10],
+          data.rows[i][13],
+          data.rows[i][14],
+          data.rows[i][15],
+          data.rows[i][16],
+          data.rows[i][17],
+          data.rows[i][18],
+        ]);
       }
     }
     https: res.json({
       statusText: statusText,
       status: status,
-      data: NA,
+      data: NA.sort((a, b) => (NA[0] > NA[0] ? 1 : -1)),
       headers: headers,
     });
   } else {
