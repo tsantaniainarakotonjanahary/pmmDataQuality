@@ -257,7 +257,7 @@ app.get("/doublon-evenement", async (req, res) => {
       "CIN",
       "TEL",
     ];
-    /*var height = data.height;
+    var height = data.height;
     var keys = [];
     for (var i = 0; i < height; i++) {
       keys.push(
@@ -281,7 +281,7 @@ app.get("/doublon-evenement", async (req, res) => {
       ) {
         duplicateValue.push(data.rows[i]);
       }
-    }
+    } /*
     var sorted = duplicateValue.sort((a, b) =>
       (a[13] + a[14] + a[15]).replace(/\s/g, "").toUpperCase() >
       (b[13] + b[14] + b[15]).replace(/\s/g, "").toUpperCase()
@@ -307,7 +307,7 @@ app.get("/doublon-evenement", async (req, res) => {
     https: res.json({
       statusText: statusText,
       status: status,
-      data: data.rows,
+      data: duplicateValue,
       headers: headers,
     });
   } else {
