@@ -88,17 +88,17 @@ app.get("/doublon-enrollement", async (req, res) => {
     );
     var retour = [];
     for (var i = 0; i < height; i++) {
-      retour.push([
-        sortedDuplicateValue.[i][7],
-        sortedDuplicateValue.[i][10],
-        sortedDuplicateValue.[i][11],
-        sortedDuplicateValue.[i][12],
-        sortedDuplicateValue.[i][13],
-        sortedDuplicateValue.[i][14],
-        sortedDuplicateValue.[i][15],
-        sortedDuplicateValue.[i][16],
-        sortedDuplicateValue.[i][17],
-      ]);
+      retour.push(
+        sortedDuplicateValue[i][7],
+        sortedDuplicateValue[i][10],
+        sortedDuplicateValue[i][11],
+        sortedDuplicateValue[i][12],
+        sortedDuplicateValue[i][13],
+        sortedDuplicateValue[i][14],
+        sortedDuplicateValue[i][15],
+        sortedDuplicateValue[i][16],
+        sortedDuplicateValue[i][17]
+      );
     }
 
     https: res.json({
