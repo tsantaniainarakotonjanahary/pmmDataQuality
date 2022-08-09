@@ -164,6 +164,7 @@ app.get("/NA-enrollement", async (req, res) => {
     ];
     var height = data.height;
     var NA = [];
+    NA.push([]);
     for (var i = 0; i < height; i++) {
       if (
         data.rows[i][12].replace(/\s/g, "").trim().length == 0 ||
