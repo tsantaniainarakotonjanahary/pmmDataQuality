@@ -282,15 +282,32 @@ app.get("/doublon-evenement", async (req, res) => {
         duplicateValue.push(data.rows[i]);
       }
     }
+    var sorted = duplicateValue.sort((a, b) =>
+      (a[13] + a[14] + a[15]).replace(/\s/g, "").toUpperCase() >
+      (b[13] + b[14] + b[15]).replace(/\s/g, "").toUpperCase()
+        ? 1
+        : -1
+    );
+
+    var retour = [];
+    retour.push([]);
+    for (var i = 0; i < retour.length; i++) {
+      retour.push([
+        sorted[i][10],
+        sorted[i][11],
+        sorted[i][12],
+        sorted[i][13],
+        sorted[i][14],
+        sorted[i][15],
+        sorted[i][16],
+        sorted[i][17],
+        sorted[i][18],
+      ]);
+    }
     https: res.json({
       statusText: statusText,
       status: status,
-      data: duplicateValue.sort((a, b) =>
-        (a[13] + a[14] + a[15]).replace(/\s/g, "").toUpperCase() >
-        (b[13] + b[14] + b[15]).replace(/\s/g, "").toUpperCase()
-          ? 1
-          : -1
-      ),
+      data: retour,
       headers: headers,
     });
   } else {
