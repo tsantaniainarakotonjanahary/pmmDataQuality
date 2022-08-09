@@ -99,17 +99,7 @@ app.get("/NA-enrollement", async (req, res) => {
     var headers = data.headers;
     var height = data.height;
     var NA = [];
-    NA.push([
-      headers[7].column,
-      headers[10].column,
-      headers[11].column,
-      headers[12].column,
-      headers[13].column,
-      headers[14].column,
-      headers[15].column,
-      headers[16].column,
-      headers[17].column,
-    ]);
+    NA.push(["a", "b", "c", "d", "e", "f", "g", "h", "i"]);
     for (var i = 0; i < height; i++) {
       if (
         data.rows[i][12].replace(/\s/g, "").trim().length == 0 ||
