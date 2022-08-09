@@ -116,7 +116,7 @@ app.get("/NA-enrollement", async (req, res) => {
         data.rows[i][13].replace(/\s/g, "").trim().length == 0 ||
         data.rows[i][14].replace(/\s/g, "").trim().length == 0
       ) {
-        data.rows[i][14] = "Autre";
+        data.rows[i][13] = "Autre";
         NA.push([
           data.rows[i][7],
           data.rows[i][10],
