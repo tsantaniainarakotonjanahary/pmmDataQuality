@@ -225,7 +225,7 @@ app.get("/doublon-evenement", async (req, res) => {
   var outputType = query.outputType; //"ENROLLMENT"
   var sort = query.sort; //"enrollmentDate"
   var columns =
-    "dimension=a1jCssI2LkW.KSr2yTdu1AI&dimension=a1jCssI2LkW.bbnyNYD1wgS&dimension=a1jCssI2LkW.LUIsbsm3okG&dimension=a1jCssI2LkW.eNRjVGxVL6l&dimension=a1jCssI2LkW.SB1IHYu2xQT&dimension=a1jCssI2LkW.QCwlZedwacH";
+    "dimension=a1jCssI2LkW.bbnyNYD1wgS&dimension=a1jCssI2LkW.LUIsbsm3okG&dimension=a1jCssI2LkW.Yp1F4txx8tm&dimension=a1jCssI2LkW.eNRjVGxVL6l&dimension=a1jCssI2LkW.SB1IHYu2xQT&dimension=a1jCssI2LkW.KSr2yTdu1AI";
   var credentials = Buffer.from(username + ":" + password).toString("base64");
   var auth = { Authorization: `Basic ${credentials}` };
   var url = "https://covax.vaksiny.gov.mg/api/29/analytics/";
