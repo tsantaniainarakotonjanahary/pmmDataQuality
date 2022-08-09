@@ -289,7 +289,7 @@ app.get("/doublon-evenement", async (req, res) => {
         : -1
     );
 
-    var retour = [];
+    /*var retour = [];
     retour.push([]);
     for (var i = 0; i < retour.length; i++) {
       retour.push([
@@ -303,11 +303,11 @@ app.get("/doublon-evenement", async (req, res) => {
         sorted[i][17],
         sorted[i][18],
       ]);
-    }
+    }*/
     https: res.json({
       statusText: statusText,
       status: status,
-      data: retour,
+      data: sorted,
       headers: headers,
     });
   } else {
