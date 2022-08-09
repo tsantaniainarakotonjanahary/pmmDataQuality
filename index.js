@@ -96,7 +96,17 @@ app.get("/NA-enrollement", async (req, res) => {
   var status = response.status;
   if (status == "200") {
     var data = await response.json();
-    var headers = data.headers;
+    var headers = [
+      "Unite d'organisation",
+      "Nom",
+      "Prenom",
+      "Date de naissance",
+      "Type de cible",
+      "sexe",
+      "CODE_EPI",
+      "CIN",
+      "TEL",
+    ];
     var height = data.height;
     var NA = [];
     for (var i = 0; i < height; i++) {
@@ -135,11 +145,10 @@ app.get("/NA-enrollement", async (req, res) => {
         ]);
       }
     }
-    var retour = NA.sort((a, b) => (NA[0] > NA[0] ? 1 : -1));
     https: res.json({
       statusText: statusText,
       status: status,
-      data: retour,
+      data: NA.sort((a, b) => (NA[0] > NA[0] ? 1 : -1)),
       headers: headers,
     });
   } else {
@@ -172,7 +181,6 @@ app.get("/doublon-evenement", async (req, res) => {
   var status = response.status;
   if (status == "200") {
     var data = await response.json();
-    var headerWidth = data.headerWidth;
     var headers = data.headers;
     var height = data.height;
     var keys = [];
