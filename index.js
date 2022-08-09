@@ -30,7 +30,32 @@ app.get("/doublon-enrollement", async (req, res) => {
   if (status == "200") {
     var data = await response.json();
     var headerWidth = data.headerWidth;
-    var headers = data.headers;
+    var headers = [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f",
+      "g",
+      "h",
+      "i",
+      "j",
+      "k",
+      "l",
+      "m",
+      "n",
+      "ö",
+      "p",
+      "q",
+      "r",
+      "s",
+      "t",
+      "u",
+      "v",
+      "w",
+      "x",
+    ];
     var height = data.height;
     var keys = [];
     for (var i = 0; i < height; i++) {
