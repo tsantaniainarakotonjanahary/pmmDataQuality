@@ -135,20 +135,11 @@ app.get("/NA-enrollement", async (req, res) => {
         ]);
       }
     }
+    var retour = NA.sort((a, b) => (NA[0] > NA[0] ? 1 : -1));
     https: res.json({
       statusText: statusText,
       status: status,
-      data: NA.sort((a, b) => (NA[0] > NA[0] ? 1 : -1)) /*.unshift([
-        headers[7].column,
-        headers[10].column,
-        headers[11].column,
-        headers[12].column,
-        headers[13].column,
-        headers[14].column,
-        headers[15].column,
-        headers[16].column,
-        headers[17].column,
-      ])*/,
+      data: retour.unshift(["a", "b", "c", "d", "e", "f", "g", "h", "i"]),
       headers: headers,
     });
   } else {
