@@ -237,7 +237,26 @@ app.get("/doublon-evenement", async (req, res) => {
   var status = response.status;
   if (status == "200") {
     var data = await response.json();
-    var headers = data.headers;
+    var headers = [
+      "Unite d'organisation",
+      "Nom",
+      "Prenom",
+      "Date de naissance",
+      "Type de cible",
+      "sexe",
+      "CODE_EPI",
+      "CIN",
+      "TEL",
+      "Unite d'organisation",
+      "Nom",
+      "Prenom",
+      "Date de naissance",
+      "Type de cible",
+      "sexe",
+      "CODE_EPI",
+      "CIN",
+      "TEL",
+    ];
     var height = data.height;
     var keys = [];
     for (var i = 0; i < height; i++) {
@@ -251,6 +270,7 @@ app.get("/doublon-evenement", async (req, res) => {
       .filter((item, index) => keys.indexOf(item) !== index)
       .filter((n) => n);
     var duplicateValue = [];
+    duplicateValue.push([]);
     for (var i = 0; i < height; i++) {
       if (
         duplicateKey.includes(
@@ -351,20 +371,6 @@ function URLStructure(
     outputType +
     "&desc=" +
     sort
-  );
-  console.log(
-    url +
-      sortie +
-      "/query/yDuAzyqYABS.json?dimension=pe:" +
-      periode +
-      "&dimension=ou:" +
-      idOrgUnit +
-      "&" +
-      columns +
-      "&stage=a1jCssI2LkW&displayProperty=NAME&outputType=" +
-      outputType +
-      "&desc=" +
-      sort
   );
 }
 
