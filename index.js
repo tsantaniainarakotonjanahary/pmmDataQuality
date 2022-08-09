@@ -99,13 +99,36 @@ app.get("/NA-enrollement", async (req, res) => {
     var headers = data.headers;
     var height = data.height;
     var NA = [];
+    NA.push([
+      headers[7].column,
+      headers[9].column,
+      headers[10].column,
+      headers[11].column,
+      headers[12].column,
+      headers[13].column,
+      headers[14].column,
+      headers[15].column,
+      headers[16].column,
+      headers[17].column,
+    ]);
     for (var i = 0; i < height; i++) {
       if (
         data.rows[i][12].replace(/\s/g, "").trim().length == 0 ||
         data.rows[i][13].replace(/\s/g, "").trim().length == 0 ||
         data.rows[i][14].replace(/\s/g, "").trim().length == 0
       ) {
-        NA.push(data.rows[i]);
+        NA.push([
+          data.rows[i][7],
+          data.rows[i][9],
+          data.rows[i][10],
+          data.rows[i][11],
+          data.rows[i][12],
+          data.rows[i][13],
+          data.rows[i][14],
+          data.rows[i][15],
+          data.rows[i][16],
+          data.rows[i][17],
+        ]);
       }
     }
     https: res.json({
