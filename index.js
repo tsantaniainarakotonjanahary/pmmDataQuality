@@ -117,8 +117,20 @@ app.get("/NA-enrollement", async (req, res) => {
         data.rows[i][14].replace(/\s/g, "").trim().length == 0
       ) {
         if (data.rows[i][13].replace(/\s/g, "").trim().length != 0) {
+          if (parseInt(data.rows[i][13].replace(/\s/g, "").trim()) == 1) {
+            data.rows[i][13] = "Agent de santé";
+          }
+          if (parseInt(data.rows[i][13].replace(/\s/g, "").trim()) == 2) {
+            data.rows[i][13] = "Force de l'ordre";
+          }
+          if (parseInt(data.rows[i][13].replace(/\s/g, "").trim()) == 3) {
+            data.rows[i][13] = "Personne âgée";
+          }
           if (parseInt(data.rows[i][13].replace(/\s/g, "").trim()) == 4) {
-            data.rows[i][13] = "Autre";
+            data.rows[i][13] = "Travailleurs sociaux";
+          }
+          if (parseInt(data.rows[i][13].replace(/\s/g, "").trim()) == 5) {
+            data.rows[i][13] = "Autres";
           }
         }
         NA.push([
