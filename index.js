@@ -204,7 +204,7 @@ app.get("/NA-enrollement", async (req, res) => {
     https: res.json({
       statusText: statusText,
       status: status,
-      data: NA.sort((a, b) => (NA[0] > NA[0] ? 1 : -1)),
+      data: NA.sort((a, b) => (a[0] > b[0] ? 1 : -1)),
       headers: headers,
     });
   } else {
@@ -355,7 +355,7 @@ app.get("/NA-evenement", async (req, res) => {
     https: res.json({
       statusText: statusText,
       status: status,
-      data: NA.sort((a, b) => (NA[0] > NA[0] ? 1 : -1)),
+      data: NA.sort((a, b) => (a[0] > b[0] ? 1 : -1)),
       headers: headers,
     });
   } else {
