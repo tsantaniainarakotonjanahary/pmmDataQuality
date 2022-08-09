@@ -139,7 +139,7 @@ app.get("/NA-enrollement", async (req, res) => {
     https: res.json({
       statusText: statusText,
       status: status,
-      data: retour.unshift(["a", "b", "c", "d", "e", "f", "g", "h", "i"]),
+      data: retour,
       headers: headers,
     });
   } else {
