@@ -86,25 +86,25 @@ app.get("/doublon-enrollement", async (req, res) => {
         ? 1
         : -1
     );
-    /*var retour = [];
+    var retour = [];
     for (var i = 0; i < height; i++) {
       retour.push([
-        sortedDuplicateValue.rows[i][7],
-        sortedDuplicateValue.rows[i][10],
-        sortedDuplicateValue.rows[i][11],
-        sortedDuplicateValue.rows[i][12],
-        sortedDuplicateValue.rows[i][13],
-        sortedDuplicateValue.rows[i][14],
-        sortedDuplicateValue.rows[i][15],
-        sortedDuplicateValue.rows[i][16],
-        sortedDuplicateValue.rows[i][17],
+        sortedDuplicateValue.[i][7],
+        sortedDuplicateValue.[i][10],
+        sortedDuplicateValue.[i][11],
+        sortedDuplicateValue.[i][12],
+        sortedDuplicateValue.[i][13],
+        sortedDuplicateValue.[i][14],
+        sortedDuplicateValue.[i][15],
+        sortedDuplicateValue.[i][16],
+        sortedDuplicateValue.[i][17],
       ]);
-    }*/
+    }
 
     https: res.json({
       statusText: statusText,
       status: status,
-      data: sortedDuplicateValue,
+      data: retour,
       headers: headers,
     });
   } else {
