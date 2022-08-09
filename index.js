@@ -260,7 +260,7 @@ app.get("/doublon-evenement", async (req, res) => {
       .filter((item, index) => keys.indexOf(item) !== index)
       .filter((n) => n);
     var duplicateValue = [];
-    //duplicateValue.push([]);
+    duplicateValue.push([]);
     for (var i = 0; i < height; i++) {
       if (
         duplicateKey.includes(
