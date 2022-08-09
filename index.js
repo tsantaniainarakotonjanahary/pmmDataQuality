@@ -251,7 +251,7 @@ app.get("/doublon-evenement", async (req, res) => {
     var keys = [];
     for (var i = 0; i < height; i++) {
       keys.push(
-        (data.rows[i][13] + data.rows[i][14] + data.rows[i][15])
+        (data.rows[i][13] + data.rows[i][14] + data.rows[i][18])
           .replace(/\s/g, "")
           .toUpperCase()
       );
@@ -264,7 +264,7 @@ app.get("/doublon-evenement", async (req, res) => {
     for (var i = 0; i < height; i++) {
       if (
         duplicateKey.includes(
-          (data.rows[i][13] + data.rows[i][14] + data.rows[i][15])
+          (data.rows[i][13] + data.rows[i][14] + data.rows[i][18])
             .replace(/\s/g, "")
             .toUpperCase()
         )
@@ -281,8 +281,8 @@ app.get("/doublon-evenement", async (req, res) => {
       }
     }
     var sorted = duplicateValue.sort((a, b) =>
-      (a[1] + a[2] + a[3]).replace(/\s/g, "").toUpperCase() >
-      (b[1] + b[2] + b[3]).replace(/\s/g, "").toUpperCase()
+      (a[1] + a[2] + a[6]).replace(/\s/g, "").toUpperCase() >
+      (b[1] + b[2] + b[6]).replace(/\s/g, "").toUpperCase()
         ? 1
         : -1
     );
