@@ -104,7 +104,7 @@ app.get("/doublon-enrollement", async (req, res) => {
     https: res.json({
       statusText: statusText,
       status: status,
-      data: retour,
+      data: sortedDuplicateValue,
       headers: headers,
     });
   } else {
