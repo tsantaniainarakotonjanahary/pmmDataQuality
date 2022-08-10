@@ -5,7 +5,7 @@ const cors = require("cors");
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.get("/doublon-enrollement", async (req, res) => {
+app.get("/doublon-enrollment", async (req, res) => {
   var query = req.query;
   var username = query.username; //"Nosybe"
   console.log(username);
@@ -129,7 +129,7 @@ app.get("/doublon-enrollement", async (req, res) => {
   }
 });
 
-app.get("/NA-enrollement", async (req, res) => {
+app.get("/NA-enrollment", async (req, res) => {
   var query = req.query;
   var username = query.username; //"Nosybe"
   var password = query.password; //"2021@Covax"
@@ -215,7 +215,7 @@ app.get("/NA-enrollement", async (req, res) => {
   }
 });
 
-app.get("/doublon-evenement", async (req, res) => {
+app.get("/doublon-event", async (req, res) => {
   var query = req.query;
   var username = query.username; //"Nosybe"
   var password = query.password; //"2021@Covax"
@@ -301,7 +301,7 @@ app.get("/doublon-evenement", async (req, res) => {
   }
 });
 
-app.get("/NA-evenement", async (req, res) => {
+app.get("/NA-event", async (req, res) => {
   var query = req.query;
   var username = query.username; //"Nosybe"
   var password = query.password; //"2021@Covax"
