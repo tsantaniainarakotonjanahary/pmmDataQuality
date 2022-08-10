@@ -388,6 +388,20 @@ function URLStructure(
     "&desc=" +
     sort
   );
+  console.log(
+    url +
+      sortie +
+      "/query/yDuAzyqYABS.json?dimension=pe:" +
+      periode +
+      "&dimension=ou:" +
+      idOrgUnit +
+      "&" +
+      columns +
+      "&stage=a1jCssI2LkW&displayProperty=NAME&outputType=" +
+      outputType +
+      "&desc=" +
+      sort
+  );
 }
 
 app.listen(process.env.PORT || 3000, () => console.log("Data api ready..."));
