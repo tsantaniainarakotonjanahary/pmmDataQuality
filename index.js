@@ -242,7 +242,6 @@ app.get("/doublon-event", async (req, res) => {
       "Nom de vaccin",
       "Numero de dose",
       "Numero de lot",
-      "Type de cible",
       "Nom",
       "Prenom",
       "EPI",
