@@ -11,7 +11,7 @@ function haltOnTimedout(req, res, next) {
 }
 app.get(
   "/doublon-enrollment",
-  timeout("480s"),
+  timeout("1000s"),
   haltOnTimedout,
   async (req, res) => {
     var query = req.query;
