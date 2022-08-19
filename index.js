@@ -5,6 +5,12 @@ const cors = require("cors");
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(timeout("60s"));
+app.use(haltOnTimedout);
+function haltOnTimedout(req, res, next) {
+  if (!req.timedout) next();
+}
+var timeout = require("connect-timeout");
 app.get("/doublon-enrollment", async (req, res) => {
   var query = req.query;
   var username = query.username; //"Nosybe"
