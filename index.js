@@ -7,10 +7,6 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(timeout("240s"));
-function haltOnTimedout(req, res, next) {
-  if (!req.timedout) next();
-}
-app.use(haltOnTimedout);
 
 app.get("/doublon-enrollment", async (req, res) => {
   var query = req.query;
