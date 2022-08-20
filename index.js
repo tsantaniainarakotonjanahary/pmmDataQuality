@@ -6,6 +6,10 @@ const cors = require("cors");
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(function (req, res, next) {
+  res.setTimeout(200);
+  next();
+});
 function haltOnTimedout(req, res, next) {
   if (!req.timedout) next();
 }
