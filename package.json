@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node NODE_OPTIONS=--max_old_space_size=8198 index.js"
+    "start": "node export NODE_OPTIONS=--max_old_space_size=8198 index.js"
   },
   "keywords": [],
   "author": "",
