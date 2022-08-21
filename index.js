@@ -8,14 +8,12 @@ app.use(express.json());
 app.use(cors());
 app.get("/doublon-enrollment", async (req, res) => {
   var query = req.query;
-  var username = query.username; //"Nosybe"
-  console.log(username);
-  var password = query.password; //"2021@Covax"
-  var periode = query.periode; //"LAST_12_MONTHS"
-  var idOrgUnit = query.idOrgUnit; //"A8UMJuP8iI3"
-  var sortie = query.sortie; //"enrollments"
-  var outputType = query.outputType; //"ENROLLMENT"
-  var sort = query.sort; //"enrollmentDate"
+  var username = query.username;
+  var password = query.password;
+  var periode = query.periode;
+  var sortie = query.sortie;
+  var outputType = query.outputType;
+  var sort = query.sort;
   var columns =
     "dimension=a1jCssI2LkW.eNRjVGxVL6l&dimension=a1jCssI2LkW.SB1IHYu2xQT&dimension=a1jCssI2LkW.NI0QRzJvQ0k&dimension=a1jCssI2LkW.LY2bDXpNvS7&dimension=a1jCssI2LkW.oindugucx72&dimension=a1jCssI2LkW.KSr2yTdu1AI&dimension=a1jCssI2LkW.Ewi7FUfcHAD&dimension=a1jCssI2LkW.fctSQp5nAYl";
   var credentials = Buffer.from(username + ":" + password).toString("base64");
@@ -30,21 +28,6 @@ app.get("/doublon-enrollment", async (req, res) => {
   var status = response.status;
   if (status == "200") {
     var data = await response.json();
-
-    var headerWidth = data.headerWidth;
-    var headers = [
-      "Unité d'organisation",
-      "Nom",
-      "Prénom",
-      "Date de naissance ",
-      "Type de cible",
-      "Sexe",
-      "CODE_EPI",
-      "CIN",
-      "TEL",
-    ];
-
-    var height = data.height;
 
     var s = data.rows.sort((a, b) =>
       (a[10] + a[11] + a[12]).replace(/\s/g, "").toUpperCase() >
@@ -90,27 +73,24 @@ app.get("/doublon-enrollment", async (req, res) => {
     var retour = [];
     retour.push([]);
     for (var i = 0; i < s.length; i++) {
-      if (s[i][13].replace(/\s/g, "").trim().length != 0) {
-        if (parseInt(s[i][13].replace(/\s/g, "").trim()) == 1) {
+      if (s[i][13].replace(/\s/g, "").length != 0) {
+        if (s[i][13].replace(/\s/g, "") == 1) {
           s[i][13] = "Agent de santé";
         }
-        if (parseInt(s[i][13].replace(/\s/g, "").trim()) == 2) {
+        if (s[i][13].replace(/\s/g, "") == 2) {
           s[i][13] = "Force de l'ordre";
         }
-        if (parseInt(s[i][13].replace(/\s/g, "").trim()) == 3) {
+        if (s[i][13].replace(/\s/g, "") == 3) {
           s[i][13] = "Personne âgée";
         }
-        if (parseInt(s[i][13].replace(/\s/g, "").trim()) == 4) {
+        if (s[i][13].replace(/\s/g, "") == 4) {
           s[i][13] = "Travailleurs sociaux";
         }
-        if (parseInt(s[i][13].replace(/\s/g, "").trim()) == 5) {
+        if (s[i][13].replace(/\s/g, "") == 5) {
           s[i][13] = "Autres";
         }
       }
-      if (
-        (s[i][10] + s[i][11] + s[i][12]).replace(/\s/g, "").toUpperCase().trim()
-          .length != 0
-      ) {
+      if ((s[i][10] + s[i][11] + s[i][12]).replace(/\s/g, "").length != 0) {
         retour.push([
           s[i][7],
           s[i][10],
@@ -129,7 +109,17 @@ app.get("/doublon-enrollment", async (req, res) => {
       statusText: statusText,
       status: status,
       data: retour,
-      headers: headers,
+      headers: [
+        "Unité d'organisation",
+        "Nom",
+        "Prénom",
+        "Date de naissance ",
+        "Type de cible",
+        "Sexe",
+        "CODE_EPI",
+        "CIN",
+        "TEL",
+      ],
     });
   } else {
     https: res.json({
