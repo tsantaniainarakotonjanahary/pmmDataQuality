@@ -7,32 +7,26 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.get("/doublon-enrollment", async (req, res) => {
-  var query = req.query;
-  var columns =
-    "dimension=a1jCssI2LkW.eNRjVGxVL6l&dimension=a1jCssI2LkW.SB1IHYu2xQT&dimension=a1jCssI2LkW.NI0QRzJvQ0k&dimension=a1jCssI2LkW.LY2bDXpNvS7&dimension=a1jCssI2LkW.oindugucx72&dimension=a1jCssI2LkW.KSr2yTdu1AI&dimension=a1jCssI2LkW.Ewi7FUfcHAD&dimension=a1jCssI2LkW.fctSQp5nAYl";
-  var url = "https://covax.vaksiny.gov.mg/api/29/analytics/";
   const response = await fetch(
     URLStructure(
-      url,
-      query.sortie,
-      query.periode,
-      query.idOrgUnit,
-      columns,
-      query.outputType,
-      query.sort
+      "https://covax.vaksiny.gov.mg/api/29/analytics/",
+      req.query.sortie,
+      req.query.periode,
+      req.query.idOrgUnit,
+      "dimension=a1jCssI2LkW.eNRjVGxVL6l&dimension=a1jCssI2LkW.SB1IHYu2xQT&dimension=a1jCssI2LkW.NI0QRzJvQ0k&dimension=a1jCssI2LkW.LY2bDXpNvS7&dimension=a1jCssI2LkW.oindugucx72&dimension=a1jCssI2LkW.KSr2yTdu1AI&dimension=a1jCssI2LkW.Ewi7FUfcHAD&dimension=a1jCssI2LkW.fctSQp5nAYl",
+      req.query.outputType,
+      req.query.sort
     ),
     {
       headers: {
         Authorization: `Basic ${Buffer.from(
-          query.username + ":" + query.password
+          req.query.username + ":" + req.query.password
         ).toString("base64")}`,
       },
     }
   );
 
-  var statusText = response.statusText;
-  var status = response.status;
-  if (status == "200") {
+  if (response.status == "200") {
     var data = await response.json();
     var s = data.rows;
     s.sort((a, b) =>
@@ -80,22 +74,24 @@ app.get("/doublon-enrollment", async (req, res) => {
     retour.push([]);
     for (var i = 0; i < s.length; i++) {
       if (s[i][13].replace(/\s/g, "").length != 0) {
-        if (s[i][13].replace(/\s/g, "") == 1) {
-          s[i][13] = "Agent de santé";
-        }
-        if (s[i][13].replace(/\s/g, "") == 2) {
-          s[i][13] = "Force de l'ordre";
-        }
-        if (s[i][13].replace(/\s/g, "") == 3) {
-          s[i][13] = "Personne âgée";
-        }
-        if (s[i][13].replace(/\s/g, "") == 4) {
-          s[i][13] = "Travailleurs sociaux";
-        }
-        if (s[i][13].replace(/\s/g, "") == 5) {
-          s[i][13] = "Autres";
+        switch (s[i][13].replace(/\s/g, "")) {
+          case 1:
+            s[i][13] = "Agent de santé";
+            break;
+          case 2:
+            s[i][13] = "Force de l'ordre";
+            break;
+          case 3:
+            s[i][13] = "Personne âgée";
+            break;
+          case 4:
+            s[i][13] = "Travailleurs sociaux";
+            break;
+          default:
+            s[i][13] = "Autres";
         }
       }
+
       if ((s[i][10] + s[i][11] + s[i][12]).replace(/\s/g, "").length != 0) {
         retour.push([
           s[i][7],
@@ -112,8 +108,8 @@ app.get("/doublon-enrollment", async (req, res) => {
     }
 
     https: res.json({
-      statusText: statusText,
-      status: status,
+      statusText: response.statusText,
+      status: response.status,
       data: retour,
       headers: [
         "Unité d'organisation",
@@ -129,8 +125,8 @@ app.get("/doublon-enrollment", async (req, res) => {
     });
   } else {
     https: res.json({
-      statusText: statusText,
-      status: status,
+      statusText: response.statusText,
+      status: response.status,
     });
   }
 });
