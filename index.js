@@ -106,11 +106,11 @@ app.get("/doublon-enrollment", async (req, res) => {
         ]);
       }
     }
-
+    s.splice(0, 7);
     https: res.json({
       statusText: response.statusText,
       status: response.status,
-      data: s.splice(0, 7),
+      data: s,
       headers: [
         "Unité d'organisation",
         "Nom",
