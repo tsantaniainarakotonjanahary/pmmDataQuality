@@ -233,18 +233,22 @@ app.get("/doublon-enrollment-2", async (req, res) => {
           s[i][13] = "Autres";
         }
       }
-
-      retour.push([
-        s[i][7],
-        s[i][10],
-        s[i][11],
-        s[i][12],
-        s[i][13],
-        s[i][14],
-        s[i][15],
-        s[i][16],
-        s[i][17],
-      ]);
+      if (
+        (s[i][10] + s[i][11] + s[i][12]).replace(/\s/g, "").toUpperCase().trim()
+          .length != 0
+      ) {
+        retour.push([
+          s[i][7],
+          s[i][10],
+          s[i][11],
+          s[i][12],
+          s[i][13],
+          s[i][14],
+          s[i][15],
+          s[i][16],
+          s[i][17],
+        ]);
+      }
     }
 
     https: res.json({
