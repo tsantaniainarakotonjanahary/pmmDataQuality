@@ -93,7 +93,7 @@ app.get("/doublon-enrollment", async (req, res) => {
       }
 
       if ((s[i][10] + s[i][11] + s[i][12]).replace(/\s/g, "").length != 0) {
-        retour.push([
+        s.splice(i, 1, [
           s[i][7],
           s[i][10],
           s[i][11],
@@ -110,7 +110,7 @@ app.get("/doublon-enrollment", async (req, res) => {
     https: res.json({
       statusText: response.statusText,
       status: response.status,
-      data: retour,
+      data: s,
       headers: [
         "Unité d'organisation",
         "Nom",
