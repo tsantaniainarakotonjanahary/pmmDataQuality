@@ -71,7 +71,7 @@ app.get("/doublon-enrollment", async (req, res) => {
 
     var retour = [];
     retour.push([]);
-    for (var i = 0; i < s.length; i++) {
+    /*for (var i = 0; i < s.length; i++) {
       if (s[i][13].replace(/\s/g, "").length != 0) {
         switch (s[i][13].replace(/\s/g, "")) {
           case 1:
@@ -104,7 +104,18 @@ app.get("/doublon-enrollment", async (req, res) => {
           s[i][17],
         ]);
       }
-    }
+    }*/
+    retour.push([
+      s[0][7],
+      s[0][10],
+      s[0][11],
+      s[0][12],
+      s[0][13],
+      s[0][14],
+      s[0][15],
+      s[0][16],
+      s[0][17],
+    ]);
 
     https: res.json({
       statusText: response.statusText,
