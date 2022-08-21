@@ -34,7 +34,8 @@ app.get("/doublon-enrollment", async (req, res) => {
   var status = response.status;
   if (status == "200") {
     var data = await response.json();
-    var s = data.rows.sort((a, b) =>
+    var s = data.rows;
+    s.sort((a, b) =>
       (a[10] + a[11] + a[12]).replace(/\s/g, "").toUpperCase() >
       (b[10] + b[11] + b[12]).replace(/\s/g, "").toUpperCase()
         ? 1
