@@ -110,7 +110,7 @@ app.get("/doublon-enrollment", async (req, res) => {
     https: res.json({
       statusText: response.statusText,
       status: response.status,
-      data: s,
+      data: s.splice(0, 7),
       headers: [
         "Unité d'organisation",
         "Nom",
