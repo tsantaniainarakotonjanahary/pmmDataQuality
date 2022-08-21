@@ -11,6 +11,7 @@ app.get("/doublon-enrollment", async (req, res) => {
   var username = query.username;
   var password = query.password;
   var periode = query.periode;
+  var idOrgUnit = query.idOrgUnit; //"A8UMJuP8iI3"
   var sortie = query.sortie;
   var outputType = query.outputType;
   var sort = query.sort;
