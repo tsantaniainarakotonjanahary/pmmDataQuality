@@ -28,7 +28,7 @@ app.get("/doublon-enrollment", async (req, res) => {
 
   if (response.status == "200") {
     var s = (await response.json()).rows;
-    s.sort((a, b) =>
+    /*s.sort((a, b) =>
       (a[10] + a[11] + a[12]).replace(/\s/g, "").toUpperCase() >
       (b[10] + b[11] + b[12]).replace(/\s/g, "").toUpperCase()
         ? 1
@@ -68,7 +68,7 @@ app.get("/doublon-enrollment", async (req, res) => {
     ) {
       s.splice(s.length - 1, 1);
     }
-
+    */
     var retour = [];
     retour.push([]);
     /*for (var i = 0; i < s.length; i++) {
