@@ -181,11 +181,9 @@ app.get("/doublon-enrollment-2", async (req, res) => {
 
     if (
       (s[0][10] + s[0][11] + s[0][12]).replace(/\s/g, "").toUpperCase() !==
-        (s[1][10] + s[1][11] + s[1][12]).replace(/\s/g, "").toUpperCase() &&
-      (s[1][10] + s[1][11] + s[1][12]).replace(/\s/g, "").toUpperCase() !==
-        (s[2][10] + s[2][11] + s[2][12]).replace(/\s/g, "").toUpperCase()
+      (s[1][10] + s[1][11] + s[1][12]).replace(/\s/g, "").toUpperCase()
     ) {
-      s.splice(1, 1);
+      s.splice(0, 1);
     }
 
     for (var i = 1; i < s.length - 1; i++) {
@@ -205,18 +203,12 @@ app.get("/doublon-enrollment-2", async (req, res) => {
     }
 
     if (
-      (s[s.length - 3][10] + s[s.length - 3][11] + s[s.length - 3][12])
-        .replace(/\s/g, "")
-        .toUpperCase() !==
-        (s[s.length - 2][10] + s[s.length - 2][11] + s[s.length - 2][12])
-          .replace(/\s/g, "")
-          .toUpperCase() &&
       (s[s.length - 2][10] + s[s.length - 2][11] + s[s.length - 2][12])
         .replace(/\s/g, "")
         .toUpperCase() !==
-        (s[s.length - 1][10] + s[s.length - 1][11] + s[s.length - 1][12])
-          .replace(/\s/g, "")
-          .toUpperCase()
+      (s[s.length - 1][10] + s[s.length - 1][11] + s[s.length - 1][12])
+        .replace(/\s/g, "")
+        .toUpperCase()
     ) {
       s.splice(s.length - 2, 1);
     }
