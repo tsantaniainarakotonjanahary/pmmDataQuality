@@ -93,7 +93,7 @@ app.get("/doublon-enrollment", async (req, res) => {
       }
 
       if ((s[i][10] + s[i][11] + s[i][12]).replace(/\s/g, "").length != 0) {
-        s.splice(i, 1, [
+        retour.push([
           s[i][7],
           s[i][10],
           s[i][11],
@@ -106,11 +106,11 @@ app.get("/doublon-enrollment", async (req, res) => {
         ]);
       }
     }
-    s.splice(0, 7);
+
     https: res.json({
       statusText: response.statusText,
       status: response.status,
-      data: s,
+      data: retour,
       headers: [
         "Unité d'organisation",
         "Nom",
