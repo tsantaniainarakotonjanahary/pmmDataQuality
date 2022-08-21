@@ -188,7 +188,7 @@ app.get("/doublon-enrollment-2", async (req, res) => {
       s.splice(1, 1);
     }
 
-    for (var i = 1; i < height - 1; i++) {
+    for (var i = 1; i < s.length - 1; i++) {
       if (
         (s[i - 1][10] + s[i - 1][11] + s[i - 1][12])
           .replace(/\s/g, "")
@@ -205,20 +205,20 @@ app.get("/doublon-enrollment-2", async (req, res) => {
     }
 
     if (
-      (s[height - 3][10] + s[height - 3][11] + s[height - 3][12])
+      (s[s.length - 3][10] + s[s.length - 3][11] + s[s.length - 3][12])
         .replace(/\s/g, "")
         .toUpperCase() !==
-        (s[height - 2][10] + s[height - 2][11] + s[height - 2][12])
+        (s[s.length - 2][10] + s[s.length - 2][11] + s[s.length - 2][12])
           .replace(/\s/g, "")
           .toUpperCase() &&
-      (s[height - 2][10] + s[height - 2][11] + s[height - 2][12])
+      (s[s.length - 2][10] + s[s.length - 2][11] + s[s.length - 2][12])
         .replace(/\s/g, "")
         .toUpperCase() !==
-        (s[height - 1][10] + s[height - 1][11] + s[height - 1][12])
+        (s[s.length - 1][10] + s[s.length - 1][11] + s[s.length - 1][12])
           .replace(/\s/g, "")
           .toUpperCase()
     ) {
-      s.splice(height - 2, 1);
+      s.splice(s.length - 2, 1);
     }
 
     var retour = [];
