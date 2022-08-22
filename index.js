@@ -69,7 +69,7 @@ app.get("/doublon-enrollment", async (req, res) => {
       s.splice(s.length - 1, 1);
     }
 
-    for (var i = 0; i < s.length; i++) {
+    for (var i = 1; i < s.length; i++) {
       if (s[i][13].replace(/\s/g, "").length != 0) {
         switch (s[i][13].replace(/\s/g, "")) {
           case 1:
