@@ -86,20 +86,9 @@ app.get("/doublon-enrollment", async (req, res) => {
         s.splice(i, 1);
         i = i - 1;
       } else {
-        s[i] = [
-          s[i][7],
-          s[i][10],
-          s[i][11],
-          s[i][12],
-          s[i][13],
-          s[i][14],
-          s[i][15],
-          s[i][16],
-          s[i][17],
-        ];
       }
     }
-    /*
+
     for (var i = 0; i < s.length; i++) {
       if ((s[i][10] + s[i][11] + s[i][12]).replace(/\s/g, "").length != 0) {
         s[i] = [
@@ -117,7 +106,7 @@ app.get("/doublon-enrollment", async (req, res) => {
         s.splice(i, 1);
         i = i - 1;
       }
-    }*/
+    }
 
     https: res.json({
       statusText: response.statusText,
