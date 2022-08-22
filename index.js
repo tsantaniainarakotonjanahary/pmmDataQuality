@@ -61,6 +61,7 @@ app.get("/doublon-enrollment", async (req, res) => {
           (s[i][10] + s[i][11] + s[i][12]).replace(/\s/g, "").toUpperCase()
       ) {
         s.splice(0, 1);
+        i = i - 1;
       } else if (
         typeof s[i + 1] === "undefined" &&
         (s[i][10] + s[i][11] + s[i][12]).replace(/\s/g, "").toUpperCase() !==
@@ -69,6 +70,7 @@ app.get("/doublon-enrollment", async (req, res) => {
             .toUpperCase()
       ) {
         s.splice(i, 1);
+        i = i - 1;
       } else if (
         typeof s[i - 1] !== "undefined" &&
         typeof s[i + 1] !== "undefined" &&
