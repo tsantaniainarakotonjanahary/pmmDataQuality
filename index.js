@@ -28,7 +28,7 @@ app.get("/doublon-enrollment", async (req, res) => {
 
   if (response.status == "200") {
     var s = (await response.json()).rows;
-    /*s.sort((a, b) =>
+    s.sort((a, b) =>
       (a[10] + a[11] + a[12]).replace(/\s/g, "").toUpperCase() >
       (b[10] + b[11] + b[12]).replace(/\s/g, "").toUpperCase()
         ? 1
@@ -68,10 +68,10 @@ app.get("/doublon-enrollment", async (req, res) => {
     ) {
       s.splice(s.length - 1, 1);
     }
-    */
+
     var retour = [];
     retour.push([]);
-    /*for (var i = 0; i < s.length; i++) {
+    for (var i = 0; i < s.length; i++) {
       if (s[i][13].replace(/\s/g, "").length != 0) {
         switch (s[i][13].replace(/\s/g, "")) {
           case 1:
@@ -92,7 +92,7 @@ app.get("/doublon-enrollment", async (req, res) => {
       }
 
       if ((s[i][10] + s[i][11] + s[i][12]).replace(/\s/g, "").length != 0) {
-        retour.push([
+        s.splice(i, 1, [
           s[i][7],
           s[i][10],
           s[i][11],
@@ -103,24 +103,24 @@ app.get("/doublon-enrollment", async (req, res) => {
           s[i][16],
           s[i][17],
         ]);
+        /*retour.push([
+          s[i][7],
+          s[i][10],
+          s[i][11],
+          s[i][12],
+          s[i][13],
+          s[i][14],
+          s[i][15],
+          s[i][16],
+          s[i][17],
+        ]);*/
       }
-    }*/
-    retour.push([
-      s[0][7],
-      s[0][10],
-      s[0][11],
-      s[0][12],
-      s[0][13],
-      s[0][14],
-      s[0][15],
-      s[0][16],
-      s[0][17],
-    ]);
+    }
 
     https: res.json({
       statusText: response.statusText,
       status: response.status,
-      data: retour,
+      data: s,
       headers: [
         "Unité d'organisation",
         "Nom",
