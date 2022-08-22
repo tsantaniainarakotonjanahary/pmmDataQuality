@@ -57,7 +57,7 @@ app.get("/doublon-enrollment", async (req, res) => {
           case 4:
             s[i][13] = "Travailleurs sociaux";
             break;
-          case 5:
+          default:
             s[i][13] = "Autres";
         }
       }
