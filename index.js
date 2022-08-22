@@ -45,19 +45,19 @@ app.get("/doublon-enrollment", async (req, res) => {
     for (var i = 1; i < s.length - 1; i++) {
       if (s[i][13].replace(/\s/g, "").length != 0) {
         switch (s[i][13].replace(/\s/g, "")) {
-          case 1:
+          case "1":
             s[i][13] = "Agent de santé";
             break;
-          case 2:
+          case "2":
             s[i][13] = "Force de l'ordre";
             break;
-          case 3:
+          case "3":
             s[i][13] = "Personne âgée";
             break;
-          case 4:
+          case "4":
             s[i][13] = "Travailleurs sociaux";
             break;
-          default:
+          case "5":
             s[i][13] = "Autres";
         }
       }
