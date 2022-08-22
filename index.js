@@ -35,14 +35,7 @@ app.get("/doublon-enrollment", async (req, res) => {
         : -1
     );
 
-    if (
-      (s[0][10] + s[0][11] + s[0][12]).replace(/\s/g, "").toUpperCase() !==
-      (s[1][10] + s[1][11] + s[1][12]).replace(/\s/g, "").toUpperCase()
-    ) {
-      s.splice(0, 1);
-    }
-
-    for (var i = 1; i < s.length - 1; i++) {
+    for (var i = 0; i < s.length; i++) {
       switch (s[i][13].replace(/\s/g, "")) {
         case "1":
           s[i][13] = "Agent de santé";
@@ -60,7 +53,11 @@ app.get("/doublon-enrollment", async (req, res) => {
           s[i][13] = "Autres";
       }
 
-      if (
+      if (typeof s[i - 1] === "undefined") {
+        s.splice(0, 1);
+      } else if (typeof s[i + 1] === "undefined") {
+        s.splice(i + 1, 1);
+      } else if (
         (s[i - 1][10] + s[i - 1][11] + s[i - 1][12])
           .replace(/\s/g, "")
           .toUpperCase() !==
@@ -73,17 +70,6 @@ app.get("/doublon-enrollment", async (req, res) => {
         s.splice(i, 1);
         i = i - 1;
       }
-    }
-
-    if (
-      (s[s.length - 2][10] + s[s.length - 2][11] + s[s.length - 2][12])
-        .replace(/\s/g, "")
-        .toUpperCase() !==
-      (s[s.length - 1][10] + s[s.length - 1][11] + s[s.length - 1][12])
-        .replace(/\s/g, "")
-        .toUpperCase()
-    ) {
-      s.splice(s.length - 1, 1);
     }
 
     for (var i = 0; i < s.length; i++) {
