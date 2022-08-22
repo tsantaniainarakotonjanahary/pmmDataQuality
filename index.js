@@ -92,7 +92,7 @@ app.get("/doublon-enrollment", async (req, res) => {
       }
 
       if ((s[i][10] + s[i][11] + s[i][12]).replace(/\s/g, "").length != 0) {
-        s.splice(i, 1, [
+        s[i] = [
           s[i][7],
           s[i][10],
           s[i][11],
@@ -102,7 +102,7 @@ app.get("/doublon-enrollment", async (req, res) => {
           s[i][15],
           s[i][16],
           s[i][17],
-        ]);
+        ];
         /*retour.push([
           s[i][7],
           s[i][10],
