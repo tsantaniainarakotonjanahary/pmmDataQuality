@@ -53,11 +53,23 @@ app.get("/doublon-enrollment", async (req, res) => {
           s[i][13] = "Autres";
       }
 
-      if (typeof s[i - 1] === "undefined") {
+      if (
+        typeof s[i - 1] === "undefined" &&
+        (s[i + 1][10] + s[i + 1][11] + s[i + 1][12])
+          .replace(/\s/g, "")
+          .toUpperCase() !==
+          (s[i][10] + s[i][11] + s[i][12]).replace(/\s/g, "").toUpperCase()
+      ) {
         s.splice(0, 1);
-      } else if (typeof s[i + 1] === "undefined") {
+      } else if (
+        typeof s[i + 1] === "undefined" &&
+        (s[i][10] + s[i][11] + s[i][12]).replace(/\s/g, "").toUpperCase() !==
+          (s[i - 1][10] + s[i - 1][11] + s[i - 1][12])
+            .replace(/\s/g, "")
+            .toUpperCase()
+      ) {
         s.splice(i + 1, 1);
-      } else (
+      } else if (
         (s[i - 1][10] + s[i - 1][11] + s[i - 1][12])
           .replace(/\s/g, "")
           .toUpperCase() !==
