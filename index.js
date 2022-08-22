@@ -114,6 +114,9 @@ app.get("/doublon-enrollment", async (req, res) => {
           s[i][16],
           s[i][17],
         ]);*/
+      } else {
+        s.splice(i, 1);
+        i = i - 1;
       }
     }
 
