@@ -56,7 +56,20 @@ app.get("/doublon-enrollment", async (req, res) => {
         s.splice(i, 1);
         i = i - 1;
       }
+    }
 
+    if (
+      (s[s.length - 2][10] + s[s.length - 2][11] + s[s.length - 2][12])
+        .replace(/\s/g, "")
+        .toUpperCase() !==
+      (s[s.length - 1][10] + s[s.length - 1][11] + s[s.length - 1][12])
+        .replace(/\s/g, "")
+        .toUpperCase()
+    ) {
+      s.splice(s.length - 1, 1);
+    }
+
+    for (var i = 0; i < s.length; i++) {
       if (s[i][13].replace(/\s/g, "").length != 0) {
         switch (s[i][13].replace(/\s/g, "")) {
           case 1:
@@ -92,17 +105,6 @@ app.get("/doublon-enrollment", async (req, res) => {
         s.splice(i, 1);
         i = i - 1;
       }
-    }
-
-    if (
-      (s[s.length - 2][10] + s[s.length - 2][11] + s[s.length - 2][12])
-        .replace(/\s/g, "")
-        .toUpperCase() !==
-      (s[s.length - 1][10] + s[s.length - 1][11] + s[s.length - 1][12])
-        .replace(/\s/g, "")
-        .toUpperCase()
-    ) {
-      s.splice(s.length - 1, 1);
     }
 
     https: res.json({
