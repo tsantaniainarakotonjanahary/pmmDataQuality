@@ -43,6 +43,25 @@ app.get("/doublon-enrollment", async (req, res) => {
     }
 
     for (var i = 1; i < s.length - 1; i++) {
+      if (s[i][13].replace(/\s/g, "").length != 0) {
+        switch (s[i][13].replace(/\s/g, "")) {
+          case 1:
+            s[i][13] = "Agent de santé";
+            break;
+          case 2:
+            s[i][13] = "Force de l'ordre";
+            break;
+          case 3:
+            s[i][13] = "Personne âgée";
+            break;
+          case 4:
+            s[i][13] = "Travailleurs sociaux";
+            break;
+          default:
+            s[i][13] = "Autres";
+        }
+      }
+
       if (
         (s[i - 1][10] + s[i - 1][11] + s[i - 1][12])
           .replace(/\s/g, "")
@@ -70,25 +89,6 @@ app.get("/doublon-enrollment", async (req, res) => {
     }
 
     for (var i = 0; i < s.length; i++) {
-      if (s[i][13].replace(/\s/g, "").length != 0) {
-        switch (s[i][13].replace(/\s/g, "")) {
-          case 1:
-            s[i][13] = "Agent de santé";
-            break;
-          case 2:
-            s[i][13] = "Force de l'ordre";
-            break;
-          case 3:
-            s[i][13] = "Personne âgée";
-            break;
-          case 4:
-            s[i][13] = "Travailleurs sociaux";
-            break;
-          default:
-            s[i][13] = "Autres";
-        }
-      }
-
       if ((s[i][10] + s[i][11] + s[i][12]).replace(/\s/g, "").length != 0) {
         s[i] = [
           s[i][7],
