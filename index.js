@@ -106,7 +106,7 @@ app.get("/doublon-enrollment", async (req, res) => {
         i = i - 1;
       }
     }
-    s[0] = [
+    /*s[0] = [
       "Unité d'organisation",
       "Nom",
       "Prénom",
@@ -116,7 +116,7 @@ app.get("/doublon-enrollment", async (req, res) => {
       "CODE_EPI",
       "CIN",
       "TEL",
-    ];
+    ];*/
 
     https: res.json({
       statusText: response.statusText,
