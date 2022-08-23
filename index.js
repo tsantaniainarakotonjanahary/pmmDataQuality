@@ -36,6 +36,23 @@ app.get("/doublon-enrollment", async (req, res) => {
     );
 
     for (var i = 0; i < s.length; i++) {
+      switch (s[i][13].replace(/\s/g, "")) {
+        case "1":
+          s[i][13] = "Agent de santé";
+          break;
+        case "2":
+          s[i][13] = "Force de l'ordre";
+          break;
+        case "3":
+          s[i][13] = "Personne âgée";
+          break;
+        case "4":
+          s[i][13] = "Travailleurs sociaux";
+          break;
+        case "5":
+          s[i][13] = "Autres";
+      }
+
       if (
         typeof s[i - 1] === "undefined" &&
         (s[i + 1][10] + s[i + 1][11] + s[i + 1][12])
@@ -73,23 +90,6 @@ app.get("/doublon-enrollment", async (req, res) => {
 
     for (var i = 0; i < s.length; i++) {
       if ((s[i][10] + s[i][11] + s[i][12]).replace(/\s/g, "").length != 0) {
-        switch (s[i][13].replace(/\s/g, "")) {
-          case "1":
-            s[i][13] = "Agent de santé";
-            break;
-          case "2":
-            s[i][13] = "Force de l'ordre";
-            break;
-          case "3":
-            s[i][13] = "Personne âgée";
-            break;
-          case "4":
-            s[i][13] = "Travailleurs sociaux";
-            break;
-          case "5":
-            s[i][13] = "Autres";
-        }
-
         s[i] = [
           s[i][7],
           s[i][10],
