@@ -6,6 +6,11 @@ const cors = require("cors");
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.get("/test", async (req, res) => {
+  res.setHeader("Content-Type", "text/html");
+  res.setHeader("Cache-Control", "s-max-age=1, stale-while-revalidate");
+  res.end(`Hello! Go to item`);
+});
 app.get("/doublon-enrollment", async (req, res) => {
   const response = await fetch(
     URLStructure(
@@ -393,3 +398,5 @@ function URLStructure(
 }
 
 app.listen(process.env.PORT || 3000, () => console.log("Data api ready..."));
+// index.js
+module.exports = app;
