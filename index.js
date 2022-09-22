@@ -256,11 +256,13 @@ app.get("/doublon-event", async (req, res) => {
     var height = data.height;
     var keys = [];
     for (var i = 0; i < height; i++) {
-      keys.push(
-        (data.rows[i][13] + data.rows[i][14] + data.rows[i][18])
-          .replace(/\s/g, "")
-          .toUpperCase()
-      );
+      if (data.rows[i][18].replace(/\s/g, "") !== "") {
+        keys.push(
+          (data.rows[i][13] + data.rows[i][14] + data.rows[i][18])
+            .replace(/\s/g, "")
+            .toUpperCase()
+        );
+      }
     }
     var duplicateKey = keys
       .filter((item, index) => keys.indexOf(item) !== index)
