@@ -3,6 +3,14 @@ const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 var timeout = require("connect-timeout");
 const cors = require("cors");
+
+const fs = require('fs').promises;
+const path = require('path');
+const process = require('process');
+const {authenticate} = require('@google-cloud/local-auth');
+const open = require('open');
+
+
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -11,6 +19,19 @@ app.get("/test", async (req, res) => {
   res.setHeader("Cache-Control", "s-max-age=1, stale-while-revalidate");
   res.end(`Hello! Go to item`);
 });
+
+
+async function authorize(res) {
+  let client = await authenticate({ scopes: ['https://mail.google.com/'], keyfilePath: path.join(process.cwd(), 'credentials.json'), });
+  if (client.credentials) { res.send(client);   }
+  
+}
+ 
+
+app.get("/auth", async (req, res) => {
+  authorize(res).then(()=>{ console.log("success"); }).catch(console.error); 
+});
+
 app.get("/doublon-enrollment", async (req, res) => {
   const response = await fetch(
     URLStructure(
