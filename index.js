@@ -1,15 +1,9 @@
 const express = require("express");
-const fetch = (...args) =>
-  import("node-fetch").then(({ default: fetch }) => fetch(...args));
+const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fetch(...args));
 var timeout = require("connect-timeout");
 const cors = require("cors");
-
-const fs = require('fs').promises;
-const path = require('path');
 const process = require('process');
-const {authenticate} = require('@google-cloud/local-auth');
-const open = require('open');
-
+var pg = require('pg');
 
 const app = express();
 app.use(express.json());
@@ -20,17 +14,167 @@ app.get("/test", async (req, res) => {
   res.end(`Hello! Go to item`);
 });
 
-
-async function authorize(res) {
-  let client = await authenticate({ scopes: ['https://mail.google.com/'], keyfilePath: path.join(process.cwd(), 'credentials.json'), });
-  if (client.credentials) { res.send(client);   }
-  
+const { MongoClient } = require('mongodb');
+const client = new MongoClient('mongodb+srv://tsanta:ETU001146@cluster0.6oftdrm.mongodb.net/?retryWrites=true&w=majority');
+let db = null;
+const main = async () =>  {
+  client.connect();
+   db = client.db('orgUnits');
+  return 'done.';
 }
- 
 
-app.get("/auth", async (req, res) => {
-  authorize(res).then(()=>{ console.log("success"); }).catch(console.error); 
+main().then(console.log).catch(console.error).finally(() => client.close());
+  
+var clients = new pg.Client("postgres://kudrtjdw:MRbspJqrSgZtkyzsiG-ANxzacmpYjuzg@babar.db.elephantsql.com/kudrtjdw");
+
+clients.connect(async function(err) 
+{
+  if(err) { return console.error('could not connect to postgres', err); }
+  console.log("Connected to postgres ");
 });
+
+app.get("/migrateregion",async (req,res) => 
+{
+ 
+    const region = await db.collection('region').find({}).toArray();
+    console.log(region);
+    for(var i = 0 ; i < region.length ; i ++ )
+    {
+      var query = "insert into region(level,name,dhis2id,parentid) values("+region[i].level+",'"+region[i].name+"','"+region[i].dhis2id+"','"+region[i].parentid+"') ";
+      clients.query(query, function(err, result) 
+      {
+        if(err) { return console.error('error running query', err); }
+      });
+    } 
+ 
+})
+
+
+app.get("/region",(req,res) => {
+  clients.query("select * from region", function(err, result) 
+  {
+    if(err) { return console.error('error running query', err); }
+    res.json(result.rows);
+  });
+})
+
+
+app.get("/districtbyregion",(req,res) => {
+  clients.query("select * from district join region on region.dhis2id = district.parentid where region.dhis2id= '"+req.query.idRegion+"' ", function(err, result) 
+  {
+    if(err) { return console.error('error running query', err); }
+    res.json(result.rows);
+  });
+})
+
+
+app.get("/communebydistrict",(req,res) => {
+  clients.query("select commune.name as communes,commune.dhis2id as dhis2id_communes from commune join district on district.dhis2id = commune.parentid where district.dhis2id ='"+req.query.idDistrict+"' ", function(err, result) 
+  {
+    if(err) { return console.error('error running query', err); }
+    res.json(result.rows);
+  });
+})
+
+app.get("/centrebycommune",(req,res) => {
+  const remove = ((+req.query.page - 1) * +req.query.row);
+  const row = (+req.query.row);
+  clients.query("select centrelevel5.name as centres,centrelevel5.dhis2id as dhis2id_centres,centrelevel5.geometry as coordinates_centres,centrelevel5.image as image_centres, commune.name as communes , district.name as districts , region.name as regions from centrelevel5 join commune on commune.dhis2id = centrelevel5.parentid join district on district.dhis2id=commune.parentid join region on region.dhis2id = district.parentid where commune.dhis2id = '"+req.query.idCommune+"' offset '"+remove+"' limit '"+row+"'", function(err, result) 
+  {
+    if(err) { return console.error('error running query', err); }
+    res.json(result.rows);
+  });
+})
+
+
+app.get("/centrebydistrict",(req,res) => {
+  const remove = ((+req.query.page - 1) * +req.query.row);
+  const row = (+req.query.row);
+  clients.query("select centrelevel5.name as centres,centrelevel5.dhis2id as dhis2id_centres,centrelevel5.geometry as coordinates_centres,centrelevel5.image as image_centres, commune.name as communes , district.name as districts , region.name as regions from centrelevel5 join commune on commune.dhis2id = centrelevel5.parentid join district on district.dhis2id=commune.parentid join region on region.dhis2id = district.parentid where district.dhis2id = '"+req.query.idDistrict+"' offset '"+remove+"' limit '"+row+"'", function(err, result) 
+  {
+    if(err) { return console.error('error running query', err); }
+    res.json(result.rows);
+  });
+})
+
+
+app.get("/centrebyregion",(req,res) => {
+  const remove = ((+req.query.page - 1) * +req.query.row);
+  const row = (+req.query.row);
+  clients.query("select centrelevel5.name as centres,centrelevel5.dhis2id as dhis2id_centres,centrelevel5.geometry as coordinates_centres,centrelevel5.image as image_centres, commune.name as communes , district.name as districts , region.name as regions from centrelevel5 join commune on commune.dhis2id = centrelevel5.parentid join district on district.dhis2id=commune.parentid join region on region.dhis2id = district.parentid where region.dhis2id = '"+req.query.idRegion+"' offset '"+remove+"' limit '"+row+"'", function(err, result) 
+  {
+    if(err) { return console.error('error running query', err); }
+    res.json(result.rows);
+  });
+})
+
+
+app.get("/centre",(req,res) => {
+  const remove = ((+req.query.page - 1) * +req.query.row);
+  const row = (+req.query.row);
+  clients.query("select centrelevel5.name as centres,centrelevel5.dhis2id as dhis2id_centres,centrelevel5.geometry as coordinates_centres,centrelevel5.image as image_centres, commune.name as communes , district.name as districts , region.name as regions from centrelevel5 join commune on commune.dhis2id = centrelevel5.parentid join district on district.dhis2id=commune.parentid join region on region.dhis2id = district.parentid  offset '"+remove+"' limit '"+row+"'", function(err, result) 
+  {
+    if(err) { return console.error('error running query', err); }
+    res.json(result.rows);
+  });
+})
+
+app.get("/migratedistrict",async (req,res) => 
+{
+    const region = await db.collection('district').find({}).toArray();
+    
+    for(var i = 0 ; i < region.length ; i ++ )
+    {
+      console.log(region[i])
+      var query = "insert into district(level,name,dhis2id,parentid) values("+region[i].level+",'"+region[i].name+"','"+region[i].dhis2id+"','"+region[i].parentid+"') ";
+      clients.query(query, function(err, result) 
+      {
+        if(err) { return console.error('error running query', err); }
+      });
+    } 
+ 
+})
+
+app.get("/migratecenter",async (req,res) => 
+{
+    const region = await db.collection('centreLevel5').find({}).toArray();
+    for(var i = 0 ; i < region.length ; i ++ )
+    {
+      var query = "insert into centrelevel5(level,name,dhis2id,parentid,geometry) values("+region[i].level+",'"+region[i].name+"','"+region[i].dhis2id+"','"+region[i].parentid+"',"+String(region[i].geometry ? (region[i].geometry.coordinates ? ("'("+region[i].geometry.coordinates[0]+","+region[i].geometry.coordinates[1]+")'") : "null" ) : "null")+")";
+      clients.query(query, function(err, result) 
+      {
+        if(err) { return console.error('error running query', err); }
+      });
+    } 
+ 
+})
+
+app.get("/migratecommune",async (req,res) => 
+{
+    const region = await db.collection('commune').find({}).toArray();
+    
+    for(var i = 0 ; i < region.length ; i ++ )
+    {
+      console.log(region[i])
+      var query = "insert into commune(level,name,dhis2id,parentid) values("+region[i].level+",'"+region[i].name+"','"+region[i].dhis2id+"','"+region[i].parentid+"') ";
+
+       clients.query(query, function(err, result) 
+      {
+        if(err) { return console.error('error running query', err); }
+      });
+    } 
+ 
+})
+
+app.get("/regionmongo", async (req,res) => res.json(await db.collection('region').find({}).toArray()))
+app.get("/districtByRegionmongo", async (req,res) => res.json(await db.collection('district').find({ parentid : req.query.idRegion }).toArray()))
+app.get("/communeBydistrictmongo", async (req,res) => res.json(await db.collection('commune').find({ parentid : req.query.idDistrict }).toArray()))
+app.get("/centrel5Bycommunemongo", async (req,res) => res.json(await db.collection('centreLevel5').find({ parentid : req.query.idCommune }).skip((+req.query.page - 1) * +req.query.row).limit(+req.query.row).toArray()))
+app.get("/centrel5mongo", async (req,res) => res.json(await db.collection('centreLevel5').find({ }).skip((+req.query.page - 1) * +req.query.row).limit(+req.query.row).toArray()))
+app.get("/centrel6Byl5mongo", async (req,res) => res.json(await db.collection('centreLevel6').find({ parentid : req.query.idCentrel5 }).skip((+req.query.page - 1) * +req.query.row).limit(+req.query.row).toArray()))
+
+
+
 
 app.get("/doublon-enrollment", async (req, res) => {
   const response = await fetch(
@@ -54,12 +198,7 @@ app.get("/doublon-enrollment", async (req, res) => {
 
   if (response.status == "200") {
     var s = (await response.json()).rows;
-    s.sort((a, b) =>
-      (a[10] + a[11] + a[12]).replace(/\s/g, "").toUpperCase() >
-      (b[10] + b[11] + b[12]).replace(/\s/g, "").toUpperCase()
-        ? 1
-        : -1
-    );
+    s.sort((a, b) => (a[10] + a[11] + a[12]).replace(/\s/g, "").toUpperCase() > (b[10] + b[11] + b[12]).replace(/\s/g, "").toUpperCase() ? 1 : -1 );
 
     for (var i = 0; i < s.length; i++) {
       switch (s[i][13].replace(/\s/g, "")) {
@@ -116,17 +255,7 @@ app.get("/doublon-enrollment", async (req, res) => {
 
     for (var i = 0; i < s.length; i++) {
       if ((s[i][10] + s[i][11] + s[i][12]).replace(/\s/g, "").length != 0) {
-        s[i] = [
-          s[i][7],
-          s[i][10],
-          s[i][11],
-          s[i][12],
-          s[i][13],
-          s[i][14],
-          s[i][15],
-          s[i][16],
-          s[i][17],
-        ];
+        s[i] = [ s[i][7],s[i][10],s[i][11],s[i][12],s[i][13],s[i][14],s[i][15],s[i][16],s[i][17],];
       } else {
         s.splice(i, 1);
         i = i - 1;
@@ -166,80 +295,34 @@ app.get("/NA-enrollment", async (req, res) => {
   var sortie = query.sortie; //"enrollments"
   var outputType = query.outputType; //"ENROLLMENT"
   var sort = query.sort; //"enrollmentDate"
-  var columns =
-    "dimension=a1jCssI2LkW.eNRjVGxVL6l&dimension=a1jCssI2LkW.SB1IHYu2xQT&dimension=a1jCssI2LkW.NI0QRzJvQ0k&dimension=a1jCssI2LkW.LY2bDXpNvS7&dimension=a1jCssI2LkW.oindugucx72&dimension=a1jCssI2LkW.KSr2yTdu1AI&dimension=a1jCssI2LkW.Ewi7FUfcHAD&dimension=a1jCssI2LkW.fctSQp5nAYl";
+  var columns = "dimension=a1jCssI2LkW.eNRjVGxVL6l&dimension=a1jCssI2LkW.SB1IHYu2xQT&dimension=a1jCssI2LkW.NI0QRzJvQ0k&dimension=a1jCssI2LkW.LY2bDXpNvS7&dimension=a1jCssI2LkW.oindugucx72&dimension=a1jCssI2LkW.KSr2yTdu1AI&dimension=a1jCssI2LkW.Ewi7FUfcHAD&dimension=a1jCssI2LkW.fctSQp5nAYl";
   var credentials = Buffer.from(username + ":" + password).toString("base64");
   var auth = { Authorization: `Basic ${credentials}` };
   var url = "https://covax.vaksiny.gov.mg/api/29/analytics/";
-  const response = await fetch(
-    URLStructure(url, sortie, periode, idOrgUnit, columns, outputType, sort),
-    { headers: auth }
-  );
+  const response = await fetch(URLStructure(url, sortie, periode, idOrgUnit, columns, outputType, sort),{ headers: auth } );
   var statusText = response.statusText;
   var status = response.status;
   if (status == "200") {
     var data = await response.json();
-    var headers = [
-      "Unite d'organisation",
-      "Nom",
-      "Prenom",
-      "Date de naissance",
-      "Type de cible",
-      "sexe",
-      "CODE_EPI",
-      "CIN",
-      "TEL",
-    ];
+    var headers = [ "Unite d'organisation","Nom","Prenom","Date de naissance","Type de cible","sexe","CODE_EPI","CIN","TEL",];
     var height = data.height;
     var NA = [];
     NA.push([]);
     for (var i = 0; i < height; i++) {
-      if (
-        data.rows[i][12].replace(/\s/g, "").trim().length == 0 ||
-        data.rows[i][13].replace(/\s/g, "").trim().length == 0 ||
-        data.rows[i][14].replace(/\s/g, "").trim().length == 0
-      ) {
+      if (data.rows[i][12].replace(/\s/g, "").trim().length == 0 || data.rows[i][13].replace(/\s/g, "").trim().length == 0 || data.rows[i][14].replace(/\s/g, "").trim().length == 0) {
         if (data.rows[i][13].replace(/\s/g, "").trim().length != 0) {
-          if (parseInt(data.rows[i][13].replace(/\s/g, "").trim()) == 1) {
-            data.rows[i][13] = "Agent de santé";
-          }
-          if (parseInt(data.rows[i][13].replace(/\s/g, "").trim()) == 2) {
-            data.rows[i][13] = "Force de l'ordre";
-          }
-          if (parseInt(data.rows[i][13].replace(/\s/g, "").trim()) == 3) {
-            data.rows[i][13] = "Personne âgée";
-          }
-          if (parseInt(data.rows[i][13].replace(/\s/g, "").trim()) == 4) {
-            data.rows[i][13] = "Travailleurs sociaux";
-          }
-          if (parseInt(data.rows[i][13].replace(/\s/g, "").trim()) == 5) {
-            data.rows[i][13] = "Autres";
-          }
+          if (parseInt(data.rows[i][13].replace(/\s/g, "").trim()) == 1) { data.rows[i][13] = "Agent de santé"; }
+          if (parseInt(data.rows[i][13].replace(/\s/g, "").trim()) == 2) { data.rows[i][13] = "Force de l'ordre"; }
+          if (parseInt(data.rows[i][13].replace(/\s/g, "").trim()) == 3) { data.rows[i][13] = "Personne âgée"; }
+          if (parseInt(data.rows[i][13].replace(/\s/g, "").trim()) == 4) { data.rows[i][13] = "Travailleurs sociaux"; }
+          if (parseInt(data.rows[i][13].replace(/\s/g, "").trim()) == 5) { data.rows[i][13] = "Autres"; }
         }
-        NA.push([
-          data.rows[i][7],
-          data.rows[i][10],
-          data.rows[i][11],
-          data.rows[i][12],
-          data.rows[i][13],
-          data.rows[i][14],
-          data.rows[i][15],
-          data.rows[i][16],
-          data.rows[i][17],
-        ]);
+        NA.push([data.rows[i][7],data.rows[i][10],data.rows[i][11],data.rows[i][12],data.rows[i][13],data.rows[i][14],data.rows[i][15],data.rows[i][16],data.rows[i][17],]);
       }
     }
-    https: res.json({
-      statusText: statusText,
-      status: status,
-      data: NA.sort((a, b) => (a[0] > b[0] ? 1 : -1)),
-      headers: headers,
-    });
+    https: res.json({ statusText: statusText,status: status,data: NA.sort((a, b) => (a[0] > b[0] ? 1 : -1)),headers: headers,});
   } else {
-    https: res.json({
-      statusText: statusText,
-      status: status,
-    });
+    https: res.json({ statusText: statusText, status: status, });
   }
 });
 
@@ -252,8 +335,7 @@ app.get("/doublon-event", async (req, res) => {
   var sortie = query.sortie; //"enrollments"
   var outputType = query.outputType; //"ENROLLMENT"
   var sort = query.sort; //"enrollmentDate"
-  var columns =
-    "dimension=a1jCssI2LkW.bbnyNYD1wgS&dimension=a1jCssI2LkW.LUIsbsm3okG&dimension=a1jCssI2LkW.Yp1F4txx8tm&dimension=a1jCssI2LkW.eNRjVGxVL6l&dimension=a1jCssI2LkW.SB1IHYu2xQT&dimension=a1jCssI2LkW.KSr2yTdu1AI";
+  var columns = "dimension=a1jCssI2LkW.bbnyNYD1wgS&dimension=a1jCssI2LkW.LUIsbsm3okG&dimension=a1jCssI2LkW.Yp1F4txx8tm&dimension=a1jCssI2LkW.eNRjVGxVL6l&dimension=a1jCssI2LkW.SB1IHYu2xQT&dimension=a1jCssI2LkW.KSr2yTdu1AI";
   var credentials = Buffer.from(username + ":" + password).toString("base64");
   var auth = { Authorization: `Basic ${credentials}` };
   var url = "https://covax.vaksiny.gov.mg/api/29/analytics/";
@@ -395,31 +477,10 @@ app.get("/NA-event", async (req, res) => {
   }
 });
 
-function URLStructure(
-  url,
-  sortie,
-  periode,
-  idOrgUnit,
-  columns,
-  outputType,
-  sort
-) {
-  return (
-    url +
-    sortie +
-    "/query/yDuAzyqYABS.json?dimension=pe:" +
-    periode +
-    "&dimension=ou:" +
-    idOrgUnit +
-    "&" +
-    columns +
-    "&stage=a1jCssI2LkW&displayProperty=NAME&outputType=" +
-    outputType +
-    "&desc=" +
-    sort
-  );
+function URLStructure( url,sortie,periode,idOrgUnit,columns,outputType,sort) {
+  return (url +sortie +"/query/yDuAzyqYABS.json?dimension=pe:" +periode +"&dimension=ou:" + idOrgUnit + "&" + columns + "&stage=a1jCssI2LkW&displayProperty=NAME&outputType=" + outputType + "&desc=" + sort );
 }
 
 app.listen(process.env.PORT || 3000, () => console.log("Data api ready..."));
-// index.js
+
 module.exports = app;
