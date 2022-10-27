@@ -1,18 +1,12 @@
 const express = require("express");
 const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fetch(...args));
-var timeout = require("connect-timeout");
 const cors = require("cors");
 const process = require('process');
 var pg = require('pg');
-
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.get("/test", async (req, res) => {
-  res.setHeader("Content-Type", "text/html");
-  res.setHeader("Cache-Control", "s-max-age=1, stale-while-revalidate");
-  res.end(`Hello! Go to item`);
-});
+app.get("/test", async (req, res) => res.json({val : "Bienvenue !!!!!" }));
 
 const { MongoClient } = require('mongodb');
 const client = new MongoClient('mongodb+srv://tsanta:ETU001146@cluster0.6oftdrm.mongodb.net/?retryWrites=true&w=majority');
@@ -35,9 +29,7 @@ clients.connect(async function(err)
 
 app.get("/migrateregion",async (req,res) => 
 {
- 
     const region = await db.collection('region').find({}).toArray();
-    console.log(region);
     for(var i = 0 ; i < region.length ; i ++ )
     {
       var query = "insert into region(level,name,dhis2id,parentid) values("+region[i].level+",'"+region[i].name+"','"+region[i].dhis2id+"','"+region[i].parentid+"') ";
