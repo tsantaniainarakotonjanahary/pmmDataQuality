@@ -46,7 +46,7 @@ app.get("/region",(req,res) => {
   clients.query("select * from region", function(err, result) 
   {
     if(err) { return console.error('error running query', err); }
-    res.json(result.rows);
+    res.json({region: result.rows});
   });
 })
 
