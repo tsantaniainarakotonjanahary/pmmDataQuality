@@ -52,7 +52,7 @@ app.get("/region",(req,res) => {
 
 
 app.get("/districtbyregion",(req,res) => {
-  clients.query("select * from district join region on region.dhis2id = district.parentid where region.dhis2id= '"+req.query.idRegion+"' ", function(err, result) 
+  clients.query("select diistrict.name as districts,district.dhis2id as dhis2id_districts from district join region on region.dhis2id = district.parentid where region.dhis2id= '"+req.query.idRegion+"' ", function(err, result) 
   {
     if(err) { return console.error('error running query', err); }
     res.json(result.rows);
