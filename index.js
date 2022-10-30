@@ -68,6 +68,15 @@ app.get("/communebydistrict",(req,res) => {
   });
 })
 
+
+app.get("/communebyregion",(req,res) => {
+  clients.query("select commune.name as name,commune.dhis2id as dhis2id from commune join district on district.dhis2id = commune.parentid join region on region.dhis2id = district.parentid where region.dhis2id ='"+req.query.idRegion+"' ", function(err, result) 
+  {
+    if(err) { return console.error('error running query', err); }
+    res.json(result.rows);
+  });
+})
+
 app.get("/centrebycommune",(req,res) => {
   const remove = ((+req.query.page - 1) * +req.query.row);
   const row = (+req.query.row);
