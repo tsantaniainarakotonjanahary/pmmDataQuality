@@ -61,7 +61,7 @@ app.get("/districtbyregion",(req,res) => {
 
 
 app.get("/communebydistrict",(req,res) => {
-  clients.query("select commune.name as communes,commune.dhis2id as dhis2id_communes from commune join district on district.dhis2id = commune.parentid where district.dhis2id ='"+req.query.idDistrict+"' ", function(err, result) 
+  clients.query("select commune.name as name,commune.dhis2id as dhis2id from commune join district on district.dhis2id = commune.parentid where district.dhis2id ='"+req.query.idDistrict+"' ", function(err, result) 
   {
     if(err) { return console.error('error running query', err); }
     res.json(result.rows);
