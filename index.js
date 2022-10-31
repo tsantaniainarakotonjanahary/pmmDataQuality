@@ -72,9 +72,7 @@ app.get("/region",(req,res) => {
 
 app.get("/districtbyregion",(req,res) => {
   pool.connect(function(err, clients, done) {
-    if(err) {
-      return console.error('error fetching client from pool', err);
-    }
+    if(err) { return console.error('error fetching client from pool', err); }
     clients.query("select district.name as name,district.dhis2id as dhis2id from district join region on region.dhis2id = district.parentid where region.dhis2id= '"+req.query.idRegion+"' ", function(err, result) 
     {
       done();
@@ -86,29 +84,42 @@ app.get("/districtbyregion",(req,res) => {
 
 
 app.get("/communebydistrict",(req,res) => {
-  clients.query("select commune.name as name,commune.dhis2id as dhis2id from commune join district on district.dhis2id = commune.parentid where district.dhis2id ='"+req.query.idDistrict+"' ", function(err, result) 
-  {
-    if(err) { return console.error('error running query', err); }
-    res.json(result.rows);
+  pool.connect(function(err, clients, done) {
+    if(err) { return console.error('error fetching client from pool', err); }
+    clients.query("select commune.name as name,commune.dhis2id as dhis2id from commune join district on district.dhis2id = commune.parentid where district.dhis2id ='"+req.query.idDistrict+"' ", function(err, result) 
+    {
+      done();
+      if(err) { return console.error('error running query', err); }
+      res.json(result.rows);
+    });
   });
 })
 
 
 app.get("/communebyregion",(req,res) => {
-  clients.query("select commune.name as name,commune.dhis2id as dhis2id from commune join district on district.dhis2id = commune.parentid join region on region.dhis2id = district.parentid where region.dhis2id ='"+req.query.idRegion+"' ", function(err, result) 
-  {
-    if(err) { return console.error('error running query', err); }
-    res.json(result.rows);
+  pool.connect(function(err, clients, done) {
+    if(err) { return console.error('error fetching client from pool', err); }
+    clients.query("select commune.name as name,commune.dhis2id as dhis2id from commune join district on district.dhis2id = commune.parentid join region on region.dhis2id = district.parentid where region.dhis2id ='"+req.query.idRegion+"' ", function(err, result) 
+    {
+      done();
+      if(err) { return console.error('error running query', err); }
+      res.json(result.rows);
+    });
   });
 })
 
 app.get("/centrebycommune",(req,res) => {
   const remove = ((+req.query.page - 1) * +req.query.row);
   const row = (+req.query.row);
-  clients.query("select centrelevel5.name as centres,centrelevel5.dhis2id as dhis2id_centres,centrelevel5.geometry as coordinates_centres,centrelevel5.image as image_centres, commune.name as communes , district.name as districts , region.name as regions from centrelevel5 join commune on commune.dhis2id = centrelevel5.parentid join district on district.dhis2id=commune.parentid join region on region.dhis2id = district.parentid where commune.dhis2id = '"+req.query.idCommune+"' offset '"+remove+"' limit '"+row+"'", function(err, result) 
-  {
-    if(err) { return console.error('error running query', err); }
-    res.json(result.rows);
+
+  pool.connect(function(err, clients, done) {
+    if(err) { return console.error('error fetching client from pool', err); }
+    clients.query("select centrelevel5.name as centres,centrelevel5.dhis2id as dhis2id_centres,centrelevel5.geometry as coordinates_centres,centrelevel5.image as image_centres, commune.name as communes , district.name as districts , region.name as regions from centrelevel5 join commune on commune.dhis2id = centrelevel5.parentid join district on district.dhis2id=commune.parentid join region on region.dhis2id = district.parentid where commune.dhis2id = '"+req.query.idCommune+"' offset '"+remove+"' limit '"+row+"'", function(err, result) 
+    {
+      done();
+      if(err) { return console.error('error running query', err); }
+      res.json(result.rows);
+    });
   });
 })
 
@@ -116,10 +127,14 @@ app.get("/centrebycommune",(req,res) => {
 app.get("/centrebydistrict",(req,res) => {
   const remove = ((+req.query.page - 1) * +req.query.row);
   const row = (+req.query.row);
-  clients.query("select centrelevel5.name as centres,centrelevel5.dhis2id as dhis2id_centres,centrelevel5.geometry as coordinates_centres,centrelevel5.image as image_centres, commune.name as communes , district.name as districts , region.name as regions from centrelevel5 join commune on commune.dhis2id = centrelevel5.parentid join district on district.dhis2id=commune.parentid join region on region.dhis2id = district.parentid where district.dhis2id = '"+req.query.idDistrict+"' offset '"+remove+"' limit '"+row+"'", function(err, result) 
-  {
-    if(err) { return console.error('error running query', err); }
-    res.json(result.rows);
+  pool.connect(function(err, clients, done) {
+    if(err) { return console.error('error fetching client from pool', err); }
+    clients.query("select centrelevel5.name as centres,centrelevel5.dhis2id as dhis2id_centres,centrelevel5.geometry as coordinates_centres,centrelevel5.image as image_centres, commune.name as communes , district.name as districts , region.name as regions from centrelevel5 join commune on commune.dhis2id = centrelevel5.parentid join district on district.dhis2id=commune.parentid join region on region.dhis2id = district.parentid where district.dhis2id = '"+req.query.idDistrict+"' offset '"+remove+"' limit '"+row+"'", function(err, result) 
+    {
+      done();
+      if(err) { return console.error('error running query', err); }
+      res.json(result.rows);
+    });
   });
 })
 
@@ -127,10 +142,15 @@ app.get("/centrebydistrict",(req,res) => {
 app.get("/centrebyregion",(req,res) => {
   const remove = ((+req.query.page - 1) * +req.query.row);
   const row = (+req.query.row);
-  clients.query("select centrelevel5.name as centres,centrelevel5.dhis2id as dhis2id_centres,centrelevel5.geometry as coordinates_centres,centrelevel5.image as image_centres, commune.name as communes , district.name as districts , region.name as regions from centrelevel5 join commune on commune.dhis2id = centrelevel5.parentid join district on district.dhis2id=commune.parentid join region on region.dhis2id = district.parentid where region.dhis2id = '"+req.query.idRegion+"' offset '"+remove+"' limit '"+row+"'", function(err, result) 
-  {
-    if(err) { return console.error('error running query', err); }
-    res.json(result.rows);
+
+  pool.connect(function(err, clients, done) {
+    if(err) { return console.error('error fetching client from pool', err); }
+    clients.query("select centrelevel5.name as centres,centrelevel5.dhis2id as dhis2id_centres,centrelevel5.geometry as coordinates_centres,centrelevel5.image as image_centres, commune.name as communes , district.name as districts , region.name as regions from centrelevel5 join commune on commune.dhis2id = centrelevel5.parentid join district on district.dhis2id=commune.parentid join region on region.dhis2id = district.parentid where region.dhis2id = '"+req.query.idRegion+"' offset '"+remove+"' limit '"+row+"'", function(err, result) 
+    {
+      done();
+      if(err) { return console.error('error running query', err); }
+      res.json(result.rows);
+    });
   });
 })
 
@@ -138,12 +158,20 @@ app.get("/centrebyregion",(req,res) => {
 app.get("/centre",(req,res) => {
   const remove = ((+req.query.page - 1) * +req.query.row);
   const row = (+req.query.row);
-  clients.query("select centrelevel5.name as centres,centrelevel5.dhis2id as dhis2id_centres,centrelevel5.geometry as coordinates_centres,centrelevel5.image as image_centres, commune.name as communes , district.name as districts , region.name as regions from centrelevel5 join commune on commune.dhis2id = centrelevel5.parentid join district on district.dhis2id=commune.parentid join region on region.dhis2id = district.parentid  offset '"+remove+"' limit '"+row+"'", function(err, result) 
-  {
-    if(err) { return console.error('error running query', err); }
-    res.json(result.rows);
+
+  pool.connect(function(err, clients, done) {
+    if(err) { return console.error('error fetching client from pool', err); }
+    clients.query("select centrelevel5.name as centres,centrelevel5.dhis2id as dhis2id_centres,centrelevel5.geometry as coordinates_centres,centrelevel5.image as image_centres, commune.name as communes , district.name as districts , region.name as regions from centrelevel5 join commune on commune.dhis2id = centrelevel5.parentid join district on district.dhis2id=commune.parentid join region on region.dhis2id = district.parentid  offset '"+remove+"' limit '"+row+"'", function(err, result) 
+    {
+      done();
+      if(err) { return console.error('error running query', err); }
+      res.json(result.rows);
+    });
   });
+
 })
+
+/*
 
 app.get("/migratedistrict",async (req,res) => 
 {
@@ -199,7 +227,7 @@ app.get("/centrel5Bycommunemongo", async (req,res) => res.json(await db.collecti
 app.get("/centrel5mongo", async (req,res) => res.json(await db.collection('centreLevel5').find({ }).skip((+req.query.page - 1) * +req.query.row).limit(+req.query.row).toArray()))
 app.get("/centrel6Byl5mongo", async (req,res) => res.json(await db.collection('centreLevel6').find({ parentid : req.query.idCentrel5 }).skip((+req.query.page - 1) * +req.query.row).limit(+req.query.row).toArray()))
 
-
+*/
 
 
 app.get("/doublon-enrollment", async (req, res) => {
