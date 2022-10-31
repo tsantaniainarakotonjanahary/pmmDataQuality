@@ -41,6 +41,15 @@ app.get("/migrateregion",async (req,res) =>
  
 })
 
+app.get("image",(req,res) => 
+{
+  clients.query("select * from region", function(err, result) 
+  {
+    if(err) { return console.error('error running query', err); }
+    res.json(result.rows);
+  });
+})
+
 
 app.get("/region",(req,res) => {
   clients.query("select * from region", function(err, result) 
@@ -80,7 +89,7 @@ app.get("/communebyregion",(req,res) => {
 app.get("/centrebycommune",(req,res) => {
   const remove = ((+req.query.page - 1) * +req.query.row);
   const row = (+req.query.row);
-  clients.query("select centrelevel5.name as centres,centrelevel5.dhis2id as dhis2id_centres,centrelevel5.geometry as coordinates_centres,centrelevel5.image as image_centres, commune.name as communes , district.name as districts , region.name as regions from centrelevel5 join commune on commune.dhis2id = centrelevel5.parentid join district on district.dhis2id=commune.parentid join region on region.dhis2id = district.parentid where commune.dhis2id = '"+req.query.idCommune+"' offset '"+remove+"' limit '"+row+"'", function(err, result) 
+  clients.query("select centrelevel5.name as name,centrelevel5.dhis2id as dhis2id,centrelevel5.geometry as coordinates_centres,centrelevel5.image as image_centres, commune.name as communes , district.name as districts , region.name as regions from centrelevel5 join commune on commune.dhis2id = centrelevel5.parentid join district on district.dhis2id=commune.parentid join region on region.dhis2id = district.parentid where commune.dhis2id = '"+req.query.idCommune+"' offset '"+remove+"' limit '"+row+"'", function(err, result) 
   {
     if(err) { return console.error('error running query', err); }
     res.json(result.rows);
