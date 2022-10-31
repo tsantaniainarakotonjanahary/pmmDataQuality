@@ -19,13 +19,21 @@ const main = async () =>  {
 
 main().then(console.log).catch(console.error).finally(() => client.close());
   
-var clients = new pg.Client("postgres://kudrtjdw:MRbspJqrSgZtkyzsiG-ANxzacmpYjuzg@babar.db.elephantsql.com/kudrtjdw");
+//var clients = new pg.Client("postgres://kudrtjdw:MRbspJqrSgZtkyzsiG-ANxzacmpYjuzg@babar.db.elephantsql.com/kudrtjdw");
 
-clients.connect(async function(err) 
+var conString ="postgres://kudrtjdw:MRbspJqrSgZtkyzsiG-ANxzacmpYjuzg@babar.db.elephantsql.com/kudrtjdw";
+
+const pool = new pg.Pool({
+  connectionString: conString
+});
+
+/*clients.connect(async function(err) 
 {
   if(err) { return console.error('could not connect to postgres', err); }
   console.log("Connected to postgres ");
-});
+});*/
+
+/*
 
 app.get("/migrateregion",async (req,res) => 
 {
@@ -50,16 +58,31 @@ app.get("image",(req,res) =>
   });
 })
 
+*/
 
 app.get("/region",(req,res) => {
-  clients.query("select * from region", function(err, result) 
+  /*clients.query("select * from region", function(err, result) 
   {
     if(err) { return console.error('error running query', err); }
     res.json(result.rows);
   });
+*/
+
+  pool.connect(function(err, clients, done) {
+    if(err) {
+      return console.error('error fetching client from pool', err);
+    }
+    clients.query("select * from region", function(err, result) 
+    {
+      done();
+      if(err) { return console.error('error running query', err); }
+      res.json(result.rows);
+    });
+  });
+  
 })
 
-
+/*
 app.get("/districtbyregion",(req,res) => {
   clients.query("select district.name as name,district.dhis2id as dhis2id from district join region on region.dhis2id = district.parentid where region.dhis2id= '"+req.query.idRegion+"' ", function(err, result) 
   {
@@ -184,7 +207,7 @@ app.get("/centrel5mongo", async (req,res) => res.json(await db.collection('centr
 app.get("/centrel6Byl5mongo", async (req,res) => res.json(await db.collection('centreLevel6').find({ parentid : req.query.idCentrel5 }).skip((+req.query.page - 1) * +req.query.row).limit(+req.query.row).toArray()))
 
 
-
+*/
 
 app.get("/doublon-enrollment", async (req, res) => {
   const response = await fetch(
