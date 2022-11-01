@@ -8,6 +8,7 @@ app.use(express.json());
 app.use(cors());
 app.get("/test", async (req, res) => res.json({val : "Bienvenue !!!!!" }));
 
+/*
 const { MongoClient } = require('mongodb');
 const client = new MongoClient('mongodb+srv://tsanta:ETU001146@cluster0.6oftdrm.mongodb.net/?retryWrites=true&w=majority');
 let db = null;
@@ -18,6 +19,7 @@ const main = async () =>  {
 }
 
 main().then(console.log).catch(console.error).finally(() => client.close());
+*/
 
 const pool = new pg.Pool({ connectionString: "postgres://kudrtjdw:MRbspJqrSgZtkyzsiG-ANxzacmpYjuzg@babar.db.elephantsql.com/kudrtjdw"});
 
@@ -123,7 +125,6 @@ app.get("/centrebycommune",(req,res) => {
   });
 })
 
-
 app.get("/centrebydistrict",(req,res) => {
   const remove = ((+req.query.page - 1) * +req.query.row);
   const row = (+req.query.row);
@@ -137,7 +138,6 @@ app.get("/centrebydistrict",(req,res) => {
     });
   });
 })
-
 
 app.get("/centrebyregion",(req,res) => {
   const remove = ((+req.query.page - 1) * +req.query.row);
