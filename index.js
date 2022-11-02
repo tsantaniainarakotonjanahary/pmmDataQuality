@@ -229,7 +229,7 @@ app.get("/centrel6Byl5mongo", async (req,res) => res.json(await db.collection('c
 
 */
 
-app.get("premierDose", async (req,res)=> {
+app.get("/premierDose", async (req,res)=> {
   const response = await fetch("https://covax.vaksiny.gov.mg/api/29/analytics.json?dimension=dx:cNx2l3Lfw7A&dimension=pe:THIS_YEAR;LAST_5_YEARS&filter=ou:"+req.query.ou+"&displayProperty=NAME",
     {
       headers: {
