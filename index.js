@@ -178,7 +178,7 @@ app.get("/searchcentre",(req,res) => {
   const row = (+req.query.row);
   pool.connect(function(err, clients, done) {
     if(err) { return console.error('error fetching client from pool', err); }
-    clients.query("select centrelevel5.name as centres,centrelevel5.dhis2id as dhis2id_centres,centrelevel5.geometry as coordinates_centres,centrelevel5.image as image_centres, commune.name as communes , district.name as districts , region.name as regions from centrelevel5 join commune on commune.dhis2id = centrelevel5.parentid join district on district.dhis2id=commune.parentid join region on region.dhis2id = district.parentid  where centrelevel5.name LIKE  %"+req.query.seq+"% offset '"+remove+"' limit '"+row+"'", function(err, result) 
+    clients.query("select centrelevel5.name as centres,centrelevel5.dhis2id as dhis2id_centres,centrelevel5.geometry as coordinates_centres,centrelevel5.image as image_centres, commune.name as communes , district.name as districts , region.name as regions from centrelevel5 join commune on commune.dhis2id = centrelevel5.parentid join district on district.dhis2id=commune.parentid join region on region.dhis2id = district.parentid  where centrelevel5.name LIKE  '%"+req.query.seq+"%' offset '"+remove+"' limit '"+row+"'", function(err, result) 
     {
       done();
       if(err) { return console.error('error running query', err); }
