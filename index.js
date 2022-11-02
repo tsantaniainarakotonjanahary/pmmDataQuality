@@ -244,6 +244,22 @@ app.get("/premierDose", async (req,res)=> {
 })
 
 
+
+app.get("/completement", async (req,res)=> {
+  const response = await fetch("https://covax.vaksiny.gov.mg/api/29/analytics.json?dimension=dx:vr6nXFKkVGH&dimension=pe:THIS_YEAR;LAST_5_YEARS&filter=ou:"+req.query.ou+"&displayProperty=NAME",
+    {
+      headers: {
+        Authorization: `Basic ${Buffer.from(
+          "Nosybe" + ":" + "2021@Covax"
+        ).toString("base64")}`,
+      },
+    }
+  );
+  var s = await response.json();
+  res.json(s);
+})
+
+
 app.get("/doublon-enrollment", async (req, res) => {
   const response = await fetch(
     URLStructure(
