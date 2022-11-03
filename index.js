@@ -244,6 +244,35 @@ app.get("/centrel6Byl5mongo", async (req,res) => res.json(await db.collection('c
 
 */
 
+app.get('/statNbPremDose',async (req,res) => 
+{
+  const response = await fetch("https://covax.vaksiny.gov.mg/api/29/analytics.json?dimension=dx:cNx2l3Lfw7A&dimension=pe:LAST_12_MONTHS&filter=ou:"+req.query.ou+"&displayProperty=NAME",{ headers: { Authorization: `Basic ${Buffer.from( "Nosybe" + ":" + "2021@Covax" ).toString("base64")}`, }, });
+    var s = await response.json();
+    res.json(s);
+})
+
+
+app.get('/statNbCompDose', async (req,res) => 
+{
+  const response = await fetch("https://covax.vaksiny.gov.mg/api/29/analytics.json?dimension=dx:vr6nXFKkVGH&dimension=pe:LAST_12_MONTHS&filter=ou:"+req.query.ou+"&displayProperty=NAME",{ headers: { Authorization: `Basic ${Buffer.from( "Nosybe" + ":" + "2021@Covax" ).toString("base64")}`, }, });
+    var s = await response.json();
+    res.json(s);
+})
+
+app.get('/statNb2dpfizerSino', async (req,res) => 
+{
+  const response = await fetch("https://covax.vaksiny.gov.mg/api/29/analytics.json?dimension=dx:mIVUY55AL5l&dimension=pe:LAST_12_MONTHS&filter=ou:"+req.query.ou+"&displayProperty=NAME",{ headers: { Authorization: `Basic ${Buffer.from( "Nosybe" + ":" + "2021@Covax" ).toString("base64")}`, }, });
+    var s = await response.json();
+    res.json(s);
+})
+
+app.get('/statNbDoseAdd', async (req,res) => 
+{
+  const response = await fetch("https://covax.vaksiny.gov.mg/api/29/analytics.json?dimension=dx:FSW7Qmy2IJi&dimension=pe:LAST_12_MONTHS&filter=ou:"+req.query.ou+"&displayProperty=NAME",{ headers: { Authorization: `Basic ${Buffer.from( "Nosybe" + ":" + "2021@Covax" ).toString("base64")}`, }, });
+    var s = await response.json();
+    res.json(s);
+})
+
 app.get("/premierDoseDistrict", async (req,res) => 
 {
     const response = await fetch("https://covax.vaksiny.gov.mg/api/32/analytics.json?dimension=dx%3AAXweWKC4B3L&dimension=ou%3AUSER_ORGUNIT_GRANDCHILDREN&showHierarchy=true&hierarchyMeta=true&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&completedOnly=false&outputIdScheme=NAME&filter=pe%3ATHIS_YEAR",{
