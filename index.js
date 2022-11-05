@@ -437,8 +437,8 @@ app.get("/doublon-enrollment", async (req, res) => {
 });
 
 app.get("/doublon-event", async (req, res) => {
-  console.log(URLStructure("https://covax.vaksiny.gov.mg/api/29/analytics/",req.query.sortie,req.query.periode,req.query.idOrgUnit,"dimension=a1jCssI2LkW.bbnyNYD1wgS&dimension=a1jCssI2LkW.LUIsbsm3okG&dimension=a1jCssI2LkW.Yp1F4txx8tm&dimension=a1jCssI2LkW.eNRjVGxVL6l&dimension=a1jCssI2LkW.SB1IHYu2xQT&dimension=a1jCssI2LkW.KSr2yTdu1AI", req.query.outputType, req.query.sort));
-  const response = await fetch(URLStructure("https://covax.vaksiny.gov.mg/api/29/analytics/",req.query.sortie,req.query.periode,req.query.idOrgUnit,"dimension=a1jCssI2LkW.bbnyNYD1wgS&dimension=a1jCssI2LkW.LUIsbsm3okG&dimension=a1jCssI2LkW.Yp1F4txx8tm&dimension=a1jCssI2LkW.eNRjVGxVL6l&dimension=a1jCssI2LkW.SB1IHYu2xQT&dimension=a1jCssI2LkW.KSr2yTdu1AI", req.query.outputType, req.query.sort),
+  console.log(URLStructure("https://covax.vaksiny.gov.mg/api/29/analytics/",req.query.sortie,req.query.periode,req.query.idOrgUnit,"dimension=a1jCssI2LkW.bbnyNYD1wgS&dimension=a1jCssI2LkW.LUIsbsm3okG&dimension=a1jCssI2LkW.Yp1F4txx8tm&dimension=a1jCssI2LkW.eNRjVGxVL6l&dimension=a1jCssI2LkW.SB1IHYu2xQT&dimension=a1jCssI2LkW.KSr2yTdu1AI&dimension=a1jCssI2LkW.NI0QRzJvQ0k", req.query.outputType, req.query.sort));
+  const response = await fetch(URLStructure("https://covax.vaksiny.gov.mg/api/29/analytics/",req.query.sortie,req.query.periode,req.query.idOrgUnit,"dimension=a1jCssI2LkW.bbnyNYD1wgS&dimension=a1jCssI2LkW.LUIsbsm3okG&dimension=a1jCssI2LkW.Yp1F4txx8tm&dimension=a1jCssI2LkW.eNRjVGxVL6l&dimension=a1jCssI2LkW.SB1IHYu2xQT&dimension=a1jCssI2LkW.KSr2yTdu1AI&dimension=a1jCssI2LkW.NI0QRzJvQ0k", req.query.outputType, req.query.sort),
     {
       headers: { Authorization: `Basic ${Buffer.from( req.query.username + ":" + req.query.password).toString("base64")}`, },
     }
@@ -468,7 +468,7 @@ app.get("/doublon-event", async (req, res) => {
     {
       if ((s[i][13] + s[i][14] + s[i][18]).replace(/\s/g, "").length != 0) 
       {
-        s[i] = [s[i][10],s[i][13],s[i][14],s[i][15],s[i][16],s[i][17],s[i][18]];
+        s[i] = [s[i][10],s[i][13],s[i][14],s[i][15],s[i][16],s[i][17],s[i][18],s[i][19]];
       } 
       else 
       {
@@ -481,7 +481,7 @@ app.get("/doublon-event", async (req, res) => {
       statusText: response.statusText,
       status: response.status,
       data: s,
-      headers: [ "Unite d'organisation", "Nom de vaccin", "Numero de dose", "Numero de lot", "Nom", "Prenom", "EPI",],
+      headers: [ "Unite d'organisation", "Nom de vaccin", "Numero de dose", "Numero de lot", "Nom", "Prenom", "EPI","Date de Naissance"],
     });
   } else {
     https: res.json({
