@@ -458,7 +458,7 @@ app.get("/doublon-event", async (req, res) => {
       {
         s.splice(i, 1);i = i - 1;
       } 
-      else if (typeof s[i - 1] !== "undefined" && typeof s[i + 1] !== "undefined" && (s[i - 1][13] + s[i - 1][14] + s[i - 1][18]).replace(/\s/g, "").toUpperCase() !== (s[i][13] + s[i][14] + s[i][18]).replace(/\s/g, "").toUpperCase() && (s[i][10] + s[i][11] + s[i][12]).replace(/\s/g, "").toUpperCase() !== (s[i + 1][13] + s[i + 1][14] + s[i + 1][18]).replace(/\s/g, "").toUpperCase()) 
+      else if (typeof s[i - 1] !== "undefined" && typeof s[i + 1] !== "undefined" && (s[i - 1][13] + s[i - 1][14] + s[i - 1][18]).replace(/\s/g, "").toUpperCase() !== (s[i][13] + s[i][14] + s[i][18]).replace(/\s/g, "").toUpperCase() && (s[i][13] + s[i][14] + s[i][18]).replace(/\s/g, "").toUpperCase() !== (s[i + 1][13] + s[i + 1][14] + s[i + 1][18]).replace(/\s/g, "").toUpperCase()) 
       {
         s.splice(i, 1);i = i - 1;
       }
