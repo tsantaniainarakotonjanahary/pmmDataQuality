@@ -345,9 +345,11 @@ app.get("/doublon-enrollment", async (req, res) => {
     }
   );
 
+
   if (response.status == "200") {
     var s = (await response.json()).rows;
-    s.sort((a, b) => (a[10] + a[11] + a[12]).replace(/\s/g, "").toUpperCase() > (b[10] + b[11] + b[12]).replace(/\s/g, "").toUpperCase() ? 1 : -1 );
+    console.log(s);
+    s.sort((a, b) => (a[10] + a[11] + a[12] + a[7] ).replace(/\s/g, "").toUpperCase() > (b[10] + b[11] + b[12] + a[7] ).replace(/\s/g, "").toUpperCase() ? 1 : -1 );
 
     for (var i = 0; i < s.length; i++) {
 
@@ -370,17 +372,17 @@ app.get("/doublon-enrollment", async (req, res) => {
 
       if (
         typeof s[i - 1] === "undefined" &&
-        (s[i + 1][10] + s[i + 1][11] + s[i + 1][12])
+        (s[i + 1][10] + s[i + 1][11] + s[i + 1][12]  + s[i + 1][7] ) 
           .replace(/\s/g, "")
           .toUpperCase() !==
-          (s[i][10] + s[i][11] + s[i][12]).replace(/\s/g, "").toUpperCase()
+          (s[i][10] + s[i][11] + s[i][12] + s[i][7] ).replace(/\s/g, "").toUpperCase()
       ) {
         s.splice(0, 1);
         i = i - 1;
       } else if (
         typeof s[i + 1] === "undefined" &&
-        (s[i][10] + s[i][11] + s[i][12]).replace(/\s/g, "").toUpperCase() !==
-          (s[i - 1][10] + s[i - 1][11] + s[i - 1][12])
+        (s[i][10] + s[i][11] + s[i][12] + s[i][7] ).replace(/\s/g, "").toUpperCase() !==
+          (s[i - 1][10] + s[i - 1][11] + s[i - 1][12] + s[i-1][7])
             .replace(/\s/g, "")
             .toUpperCase()
       ) {
@@ -389,12 +391,12 @@ app.get("/doublon-enrollment", async (req, res) => {
       } else if (
         typeof s[i - 1] !== "undefined" &&
         typeof s[i + 1] !== "undefined" &&
-        (s[i - 1][10] + s[i - 1][11] + s[i - 1][12])
+        (s[i - 1][10] + s[i - 1][11] + s[i - 1][12] + s[i - 1][7] )
           .replace(/\s/g, "")
           .toUpperCase() !==
-          (s[i][10] + s[i][11] + s[i][12]).replace(/\s/g, "").toUpperCase() &&
-        (s[i][10] + s[i][11] + s[i][12]).replace(/\s/g, "").toUpperCase() !==
-          (s[i + 1][10] + s[i + 1][11] + s[i + 1][12])
+          (s[i][10] + s[i][11] + s[i][12] + s[i][7] ).replace(/\s/g, "").toUpperCase() &&
+        (s[i][10] + s[i][11] + s[i][12] + s[i][7] ).replace(/\s/g, "").toUpperCase() !==
+          (s[i + 1][10] + s[i + 1][11] + s[i + 1][12] + s[i + 1][7])
             .replace(/\s/g, "")
             .toUpperCase()
       ) {
