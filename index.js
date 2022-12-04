@@ -330,6 +330,31 @@ app.get("/astraRecu", async (req,res)=> {
   
 })*/
 
+
+app.get("/login",async (req,res) => 
+{
+    const response = await fetch("https://covax.vaksiny.gov.mg/api/29/me", { headers: { Authorization: `Basic ${Buffer.from( req.query.username + ":" + req.query.password).toString("base64")}`, }, });
+    var s = (await response.json());
+    if(response.status==200)
+    {
+      s.settings = {};
+      const ou = s.organisationUnits.filter(object => { return object.id !== "O5FeT4g4GOV"; })[0];
+      pool.connect(function(err, clients, done) {
+        if(err) { return console.error('error fetching client from pool', err); }
+        clients.query("select centrelevel5.name as centres,centrelevel5.dhis2id as dhis2id_centres,centrelevel5.geometry as coordinates_centres,centrelevel5.image as image_centres, commune.name as communes , commune.dhis2id as dhis2id_commune , district.name as districts ,district.dhis2id as dhis2id_district, region.name as regions from centrelevel5 join commune on commune.dhis2id = centrelevel5.parentid join district on district.dhis2id=commune.parentid join region on region.dhis2id = district.parentid  where commune.dhis2id = '"+ou.id+"' or centrelevel5.dhis2id='"+ou.id+"' or district.dhis2id= '"+ou.id+"' limit 1 ", function(err, result) 
+        {
+          done();
+          if(err) { return console.error('error running query', err); }
+          https: res.json({  s, district : result.rows[0] , status : 200 });
+        });
+      });
+    }
+    else 
+    {
+      https: res.json({ s , status : 401 });
+    }
+})
+
 app.get("/doublon-enrollment", async (req, res) => {
   const response = await fetch(URLStructure(
       "https://covax.vaksiny.gov.mg/api/29/analytics/",req.query.sortie,req.query.periode,req.query.idOrgUnit,"dimension=a1jCssI2LkW.eNRjVGxVL6l&dimension=a1jCssI2LkW.SB1IHYu2xQT&dimension=a1jCssI2LkW.NI0QRzJvQ0k&dimension=a1jCssI2LkW.LY2bDXpNvS7&dimension=a1jCssI2LkW.oindugucx72&dimension=a1jCssI2LkW.KSr2yTdu1AI&dimension=a1jCssI2LkW.Ewi7FUfcHAD&dimension=a1jCssI2LkW.fctSQp5nAYl",
@@ -370,8 +395,7 @@ app.get("/doublon-enrollment", async (req, res) => {
           s[i][13] = "Autres";
       }
 
-      if (
-        typeof s[i - 1] === "undefined" &&
+      if ( typeof s[i - 1] === "undefined" &&
         (s[i + 1][10] + s[i + 1][11] + s[i + 1][12]  + s[i + 1][7] ) 
           .replace(/\s/g, "")
           .toUpperCase() !==
@@ -420,17 +444,7 @@ app.get("/doublon-enrollment", async (req, res) => {
       statusText: response.statusText,
       status: response.status,
       data: s,
-      headers: [
-        "Unité d'organisation",
-        "Nom",
-        "Prénom",
-        "Date de naissance ",
-        "Type de cible",
-        "Sexe",
-        "CODE_EPI",
-        "CIN",
-        "TEL",
-      ],
+      headers: ["Unité d'organisation","Nom","Prénom","Date de naissance ","Type de cible","Sexe","CODE_EPI","CIN","TEL", ],
     });
   } else {
     https: res.json({
@@ -499,13 +513,13 @@ app.get("/doublon-event", async (req, res) => {
 
 app.get("/NA-enrollment", async (req, res) => {
   var query = req.query;
-  var username = query.username; //"Nosybe"
-  var password = query.password; //"2021@Covax"
-  var periode = query.periode; //"LAST_12_MONTHS"
-  var idOrgUnit = query.idOrgUnit; //"A8UMJuP8iI3"
-  var sortie = query.sortie; //"enrollments"
-  var outputType = query.outputType; //"ENROLLMENT"
-  var sort = query.sort; //"enrollmentDate"
+  var username = query.username; 
+  var password = query.password; 
+  var periode = query.periode; 
+  var idOrgUnit = query.idOrgUnit; 
+  var sortie = query.sortie; 
+  var outputType = query.outputType; 
+  var sort = query.sort; 
   var columns = "dimension=a1jCssI2LkW.eNRjVGxVL6l&dimension=a1jCssI2LkW.SB1IHYu2xQT&dimension=a1jCssI2LkW.NI0QRzJvQ0k&dimension=a1jCssI2LkW.LY2bDXpNvS7&dimension=a1jCssI2LkW.oindugucx72&dimension=a1jCssI2LkW.KSr2yTdu1AI&dimension=a1jCssI2LkW.Ewi7FUfcHAD&dimension=a1jCssI2LkW.fctSQp5nAYl";
   var credentials = Buffer.from(username + ":" + password).toString("base64");
   var auth = { Authorization: `Basic ${credentials}` };
@@ -537,94 +551,6 @@ app.get("/NA-enrollment", async (req, res) => {
   }
 });
 
-/*
-app.get("/doublon-event", async (req, res) => {
-  var query = req.query;
-  var username = query.username;
-  var password = query.password;
-  var periode = query.periode;
-  var idOrgUnit = query.idOrgUnit; //"A8UMJuP8iI3"
-  var sortie = query.sortie; //"enrollments"
-  var outputType = query.outputType; //"ENROLLMENT"
-  var sort = query.sort; //"enrollmentDate"
-  var columns = "dimension=a1jCssI2LkW.bbnyNYD1wgS&dimension=a1jCssI2LkW.LUIsbsm3okG&dimension=a1jCssI2LkW.Yp1F4txx8tm&dimension=a1jCssI2LkW.eNRjVGxVL6l&dimension=a1jCssI2LkW.SB1IHYu2xQT&dimension=a1jCssI2LkW.KSr2yTdu1AI";
-  var credentials = Buffer.from(username + ":" + password).toString("base64");
-  var auth = { Authorization: `Basic ${credentials}` };
-  var url = "https://covax.vaksiny.gov.mg/api/29/analytics/";
-  const response = await fetch(
-    URLStructure(url, sortie, periode, idOrgUnit, columns, outputType, sort),
-    { headers: auth }
-  );
-  var statusText = response.statusText;
-  var status = response.status;
-  if (status == "200") {
-    var data = await response.json();
-    var headers = [
-      "Unite d'organisation",
-      "Nom de vaccin",
-      "Numero de dose",
-      "Numero de lot",
-      "Nom",
-      "Prenom",
-      "EPI",
-    ];
-    var height = data.height;
-    var keys = [];
-    for (var i = 0; i < height; i++) {
-      if (data.rows[i][18].replace(/\s/g, "") !== "") {
-        keys.push(
-          (data.rows[i][13] + data.rows[i][14] + data.rows[i][18])
-            .replace(/\s/g, "")
-            .toUpperCase()
-        );
-      }
-    }
-    var duplicateKey = keys
-      .filter((item, index) => keys.indexOf(item) !== index)
-      .filter((n) => n);
-    var duplicateValue = [];
-    //duplicateValue.push([]);
-    for (var i = 0; i < height; i++) {
-      if (
-        duplicateKey.includes(
-          (data.rows[i][13] + data.rows[i][14] + data.rows[i][18])
-            .replace(/\s/g, "")
-            .toUpperCase()
-        )
-      ) {
-        duplicateValue.push([
-          data.rows[i][10],
-          data.rows[i][13],
-          data.rows[i][14],
-          data.rows[i][15],
-          data.rows[i][16],
-          data.rows[i][17],
-          data.rows[i][18],
-        ]);
-      }
-    }
-    var sorted = duplicateValue.sort((a, b) =>
-      (a[1] + a[2] + a[6]).replace(/\s/g, "").toUpperCase() >
-      (b[1] + b[2] + b[6]).replace(/\s/g, "").toUpperCase()
-        ? 1
-        : -1
-    );
-
-    https: res.json({
-      statusText: statusText,
-      status: status,
-      data: sorted,
-      headers: headers,
-    });
-  } else {
-    https: res.json({
-      statusText: statusText,
-      status: status,
-    });
-  }
-});
-
-*/
 
 app.get("/NA-event", async (req, res) => {
   var query = req.query;
