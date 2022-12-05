@@ -196,6 +196,19 @@ app.get("/getdistrict",(req,res) => {
   });
 })
 
+
+app.get("/getcommune",(req,res) => {
+  pool.connect(function(err, clients, done) {
+    if(err) { return console.error('error fetching client from pool', err); }
+    clients.query("select * from commune", function(err, result) 
+    {
+      done();
+      if(err) { return console.error('error running query', err); }
+      res.json(result.rows);
+    });
+  });
+})
+
 app.get("/updateregion",(req,res) => {
   pool.connect(function(err, clients, done) {
     if(err) { return console.error('error fetching client from pool', err); }
