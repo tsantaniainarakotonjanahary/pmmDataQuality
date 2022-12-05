@@ -171,6 +171,18 @@ app.get("/centre",(req,res) => {
   });
 })
 
+app.get("/addregion",(req,res) => {
+  pool.connect(function(err, clients, done) {
+    if(err) { return console.error('error fetching client from pool', err); }
+    clients.query("insert into region(level,name,dhis2id,parentid) values ('"+req.query.level+"','"+req.query.name+"','"+req.query.dhis2id+"','"+req.query.parentid+"')", function(err, result) 
+    {
+      done();
+      if(err) { return console.error('error running query', err); }
+      res.json(result.rows);
+    });
+  });
+})
+
 
 
 app.get("/searchcentre",(req,res) => {
