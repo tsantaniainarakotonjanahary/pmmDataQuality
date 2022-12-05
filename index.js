@@ -171,6 +171,44 @@ app.get("/centre",(req,res) => {
   });
 })
 
+app.get("/getregion",(req,res) => {
+  pool.connect(function(err, clients, done) {
+    if(err) { return console.error('error fetching client from pool', err); }
+    clients.query("select * from region", function(err, result) 
+    {
+      done();
+      if(err) { return console.error('error running query', err); }
+      res.json(result.rows);
+    });
+  });
+})
+
+app.get("/updateregion",(req,res) => {
+  pool.connect(function(err, clients, done) {
+    if(err) { return console.error('error fetching client from pool', err); }
+    clients.query("update region set level="+req.query.level+",name='"+req.query.name+"',dhis2id='"+req.query.dhis2id+"',parentid='"+req.query.parentid+"' where id = "+req.query.id+" ", function(err, result) 
+    {
+      done();
+      if(err) { return console.error('error running query', err); }
+      res.json(result.rows);
+    });
+  });
+})
+
+
+app.get("/deleteregion",(req,res) => {
+  pool.connect(function(err, clients, done) {
+    if(err) { return console.error('error fetching client from pool', err); }
+    clients.query("Delete from region where id="+req.query.id+" ", function(err, result) 
+    {
+      done();
+      if(err) { return console.error('error running query', err); }
+      res.json(result.rows);
+    });
+  });
+})
+
+
 app.get("/addregion",(req,res) => {
   pool.connect(function(err, clients, done) {
     if(err) { return console.error('error fetching client from pool', err); }
