@@ -183,6 +183,19 @@ app.get("/getregion",(req,res) => {
   });
 })
 
+
+app.get("/getdistrict",(req,res) => {
+  pool.connect(function(err, clients, done) {
+    if(err) { return console.error('error fetching client from pool', err); }
+    clients.query("select * from district", function(err, result) 
+    {
+      done();
+      if(err) { return console.error('error running query', err); }
+      res.json(result.rows);
+    });
+  });
+})
+
 app.get("/updateregion",(req,res) => {
   pool.connect(function(err, clients, done) {
     if(err) { return console.error('error fetching client from pool', err); }
@@ -195,7 +208,6 @@ app.get("/updateregion",(req,res) => {
   });
 })
 
-
 app.get("/deleteregion",(req,res) => {
   pool.connect(function(err, clients, done) {
     if(err) { return console.error('error fetching client from pool', err); }
@@ -207,7 +219,6 @@ app.get("/deleteregion",(req,res) => {
     });
   });
 })
-
 
 app.get("/addregion",(req,res) => {
   pool.connect(function(err, clients, done) {
