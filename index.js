@@ -114,7 +114,7 @@ app.get("/communebyregion",(req,res) => {
 app.get("/communebydistrictbyregion",(req,res) => {
   pool.connect(function(err, clients, done) {
     if(err) { return console.error('error fetching client from pool', err); }
-    clients.query("select commune.name as name,commune.dhis2id as dhis2id from commune join district on district.dhis2id = commune.parentid join region on region.dhis2id = district.parentid  ", function(err, result) 
+    clients.query(" select  commune.id as communeid , commune.level as communelevel , commune.name as communename, commune.dhis2id as communedhis2id , commune.parentid as communeparentid ,district.id as districtid , district.level as districtlevel , district.name as districtname, district.dhis2id as districtdhis2id , district.parentid as districtparentid , region.id as regionid , region.level as regionlevel , region.name as regionname, region.dhis2id as regiondhis2id , region.parentid as regionparentid   from commune join district on district.dhis2id=commune.parentid join region on region.dhis2id = district.parentid ; ", function(err, result) 
     {
       done();
       if(err) { return console.error('error running query', err); }
