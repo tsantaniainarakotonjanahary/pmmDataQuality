@@ -184,7 +184,15 @@ app.get("/centre",(req,res) => {
 
 
 app.get('/addCentre',async (req,res) => {
-  
+  pool.connect(function(err, clients, done) {
+    if(err) { return console.error('error fetching client from pool', err); }
+    clients.query("insert into centrelevel5(level,name,dhis2id,parentid,geometry,image) values (5,'"+req.query.name+"','"+req.query.dhis2id+"','"+req.query.parentid+"','("+req.query.long+","+req.query.lat+")','"+req.query.img+"')", function(err, result) 
+    {
+      done();
+      if(err) { return console.error('error running query', err); }
+      res.json(result.rows);
+    });
+  });
 })
 
 app.get("/getregion",(req,res) => {
