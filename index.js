@@ -123,6 +123,18 @@ app.get("/communebydistrictbyregion",(req,res) => {
   });
 })
 
+
+app.get("/centrebycommunebydistrictbyregion",(req,res) => {
+  pool.connect(function(err, clients, done) {
+    if(err) { return console.error('error fetching client from pool', err); }
+    clients.query("select  COUNT(*) OVER() AS total , centrelevel5.id as centreid , centrelevel5.level as centrelevel , centrelevel5.name as centrename, centrelevel5.dhis2id as centredhis2id , centrelevel5.parentid as centreparentid , commune.id as communeid , commune.level as communelevel , commune.name as communename, commune.dhis2id as communedhis2id , commune.parentid as communeparentid ,district.id as districtid , district.level as districtlevel , district.name as districtname, district.dhis2id as districtdhis2id , district.parentid as districtparentid , region.id as regionid , region.level as regionlevel , region.name as regionname, region.dhis2id as regiondhis2id , region.parentid as regionparentid   from commune join district on district.dhis2id=commune.parentid join region on region.dhis2id = district.parentid join centrelevel5 on centrelevel5.parentid = commune.dhis2id ;", function(err, result) {
+      done();
+      if(err) { return console.error('error running query', err); }
+      res.json(result.rows);
+    });
+  });
+})
+
 app.get("/centrebycommune",(req,res) => {
   const remove = ((+req.query.page - 1) * +req.query.row);
   const row = (+req.query.row);
