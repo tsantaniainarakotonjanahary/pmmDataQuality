@@ -467,17 +467,9 @@ app.get("/login",async (req,res) =>
 })
 
 app.get("/doublon-enrollment", async (req, res) => {
-  const response = await fetch(URLStructure(
-      "https://covax.vaksiny.gov.mg/api/29/analytics/",req.query.sortie,req.query.periode,req.query.idOrgUnit,"dimension=a1jCssI2LkW.eNRjVGxVL6l&dimension=a1jCssI2LkW.SB1IHYu2xQT&dimension=a1jCssI2LkW.NI0QRzJvQ0k&dimension=a1jCssI2LkW.LY2bDXpNvS7&dimension=a1jCssI2LkW.oindugucx72&dimension=a1jCssI2LkW.KSr2yTdu1AI&dimension=a1jCssI2LkW.Ewi7FUfcHAD&dimension=a1jCssI2LkW.fctSQp5nAYl",
-      req.query.outputType,
-      req.query.sort
-    ),
+  const response = await fetch(URLStructure("https://covax.vaksiny.gov.mg/api/29/analytics/",req.query.sortie,req.query.periode,req.query.idOrgUnit,"dimension=a1jCssI2LkW.eNRjVGxVL6l&dimension=a1jCssI2LkW.SB1IHYu2xQT&dimension=a1jCssI2LkW.NI0QRzJvQ0k&dimension=a1jCssI2LkW.LY2bDXpNvS7&dimension=a1jCssI2LkW.oindugucx72&dimension=a1jCssI2LkW.KSr2yTdu1AI&dimension=a1jCssI2LkW.Ewi7FUfcHAD&dimension=a1jCssI2LkW.fctSQp5nAYl",req.query.outputType,req.query.sort),
     {
-      headers: {
-        Authorization: `Basic ${Buffer.from(
-          req.query.username + ":" + req.query.password
-        ).toString("base64")}`,
-      },
+      headers: {Authorization: `Basic ${Buffer.from( req.query.username + ":" + req.query.password ).toString("base64")}`,},
     }
   );
 
@@ -564,6 +556,100 @@ app.get("/doublon-enrollment", async (req, res) => {
     });
   }
 });
+
+
+app.get("/doublon-enrollmentdd", async (req, res) => {
+  const response = await fetch("https://covax.vaksiny.gov.mg/api/29/analytics/enrollments/query/yDuAzyqYABS.json?dimension=ou:"+req.query.idOrgUnit+"&dimension=a1jCssI2LkW.eNRjVGxVL6l&dimension=a1jCssI2LkW.SB1IHYu2xQT&dimension=a1jCssI2LkW.NI0QRzJvQ0k&dimension=a1jCssI2LkW.LY2bDXpNvS7&dimension=a1jCssI2LkW.oindugucx72&dimension=a1jCssI2LkW.KSr2yTdu1AI&dimension=a1jCssI2LkW.Ewi7FUfcHAD&dimension=a1jCssI2LkW.fctSQp5nAYl&stage=a1jCssI2LkW&startDate="+req.query.d1+"&endDate="+req.query.d2+"&displayProperty=NAME&outputType=ENROLLMENT&desc=Date",
+    {
+      headers: {Authorization: `Basic ${Buffer.from( req.query.username + ":" + req.query.password ).toString("base64")}`,},
+    }
+  );
+
+
+  if (response.status == "200") {
+    var s = (await response.json()).rows;
+    console.log(s);
+    s.sort((a, b) => (a[10] + a[11] + a[12] + a[7] ).replace(/\s/g, "").toUpperCase() > (b[10] + b[11] + b[12] + a[7] ).replace(/\s/g, "").toUpperCase() ? 1 : -1 );
+
+    for (var i = 0; i < s.length; i++) {
+
+      switch (s[i][13].replace(/\s/g, "")) {
+        case "1":
+          s[i][13] = "Agent de santé";
+          break;
+        case "2":
+          s[i][13] = "Force de l'ordre";
+          break;
+        case "3":
+          s[i][13] = "Personne âgée";
+          break;
+        case "4":
+          s[i][13] = "Travailleurs sociaux";
+          break;
+        case "5":
+          s[i][13] = "Autres";
+      }
+
+      if ( typeof s[i - 1] === "undefined" &&
+        (s[i + 1][10] + s[i + 1][11] + s[i + 1][12]  + s[i + 1][7] ) 
+          .replace(/\s/g, "")
+          .toUpperCase() !==
+          (s[i][10] + s[i][11] + s[i][12] + s[i][7] ).replace(/\s/g, "").toUpperCase()
+      ) {
+        s.splice(0, 1);
+        i = i - 1;
+      } else if (
+        typeof s[i + 1] === "undefined" &&
+        (s[i][10] + s[i][11] + s[i][12] + s[i][7] ).replace(/\s/g, "").toUpperCase() !==
+          (s[i - 1][10] + s[i - 1][11] + s[i - 1][12] + s[i-1][7])
+            .replace(/\s/g, "")
+            .toUpperCase()
+      ) {
+        s.splice(i, 1);
+        i = i - 1;
+      } else if (
+        typeof s[i - 1] !== "undefined" &&
+        typeof s[i + 1] !== "undefined" &&
+        (s[i - 1][10] + s[i - 1][11] + s[i - 1][12] + s[i - 1][7] )
+          .replace(/\s/g, "")
+          .toUpperCase() !==
+          (s[i][10] + s[i][11] + s[i][12] + s[i][7] ).replace(/\s/g, "").toUpperCase() &&
+        (s[i][10] + s[i][11] + s[i][12] + s[i][7] ).replace(/\s/g, "").toUpperCase() !==
+          (s[i + 1][10] + s[i + 1][11] + s[i + 1][12] + s[i + 1][7])
+            .replace(/\s/g, "")
+            .toUpperCase()
+      ) {
+        s.splice(i, 1);
+        i = i - 1;
+      }
+    }
+
+    for (var i = 0; i < s.length; i++) {
+      if ((s[i][10] + s[i][11] + s[i][12] + s[i][7] ).replace(/\s/g, "").length != 0) {
+        s[i] = [s[i][7],s[i][10],s[i][11],s[i][12],s[i][13],s[i][14],s[i][15],s[i][16],s[i][17],];
+      } else {
+        s.splice(i, 1);
+        i = i - 1;
+      }
+    }
+
+    var length = s.unshift(["","","","","","","","",""]);
+
+    https: res.json({
+      statusText: response.statusText,
+      status: response.status,
+      data: s,
+      headers: ["Unité d'organisation","Nom","Prénom","Date de naissance ","Type de cible","Sexe","CODE_EPI","CIN","TEL", ],
+    });
+  } else {
+    https: res.json({
+      statusText: response.statusText,
+      status: response.status,
+    });
+  }
+});
+
+
 
 app.get("/doublon-event", async (req, res) => {
   const response = await fetch(URLStructure("https://covax.vaksiny.gov.mg/api/29/analytics/",req.query.sortie,req.query.periode,req.query.idOrgUnit,"dimension=a1jCssI2LkW.bbnyNYD1wgS&dimension=a1jCssI2LkW.LUIsbsm3okG&dimension=a1jCssI2LkW.Yp1F4txx8tm&dimension=a1jCssI2LkW.eNRjVGxVL6l&dimension=a1jCssI2LkW.SB1IHYu2xQT&dimension=a1jCssI2LkW.KSr2yTdu1AI&dimension=a1jCssI2LkW.NI0QRzJvQ0k", req.query.outputType, req.query.sort),{ headers: { Authorization: `Basic ${Buffer.from( req.query.username + ":" + req.query.password).toString("base64")}`, }, } );
