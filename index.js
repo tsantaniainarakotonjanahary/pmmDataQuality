@@ -588,7 +588,7 @@ app.get("/doublon-enrollmentdd", async (req, res) => {
           s[i][13] = "Autres";
       }
 
-      if ( typeof s[i - 1] === "undefined" && 
+      if ( typeof s[i - 1] === "undefined" &&  typeof s[i + 1] !== "undefined" &&
         (s[i + 1][10] + s[i + 1][11] + s[i + 1][12]  + s[i + 1][7] ) 
           .replace(/\s/g, "")
           .toUpperCase() !==
