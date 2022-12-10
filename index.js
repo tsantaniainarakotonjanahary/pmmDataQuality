@@ -768,7 +768,7 @@ app.get("/NA-enrollmentdd", async (req, res) => {
   var credentials = Buffer.from(username + ":" + password).toString("base64");
   var auth = { Authorization: `Basic ${credentials}` };
   var url = "https://covax.vaksiny.gov.mg/api/29/analytics/";
-  const response = await fetch("https://covax.vaksiny.gov.mg/api/29/analytics/enrollments/query/yDuAzyqYABS.json?dimension=ou:"+req.query.idOrgUnit+"&dimension=a1jCssI2LkW.eNRjVGxVL6l&dimension=a1jCssI2LkW.SB1IHYu2xQT&dimension=a1jCssI2LkW.NI0QRzJvQ0k&dimension=a1jCssI2LkW.LY2bDXpNvS7&dimension=a1jCssI2LkW.oindugucx72&dimension=a1jCssI2LkW.KSr2yTdu1AI&dimension=a1jCssI2LkW.Ewi7FUfcHAD&dimension=a1jCssI2LkW.fctSQp5nAYl&stage=a1jCssI2LkW&startDate="+req.query.d1+"&endDate="+req.query.d2+"&displayProperty=NAME&outputType=ENROLLMENT&desc=enrollment",{ headers: auth } );
+  const response = await fetch("https://covax.vaksiny.gov.mg/api/29/analytics/enrollments/query/yDuAzyqYABS.json?dimension=ou:"+req.query.idOrgUnit+"&dimension=a1jCssI2LkW.eNRjVGxVL6l&dimension=a1jCssI2LkW.SB1IHYu2xQT&dimension=a1jCssI2LkW.NI0QRzJvQ0k&dimension=a1jCssI2LkW.LY2bDXpNvS7&dimension=a1jCssI2LkW.oindugucx72&dimension=a1jCssI2LkW.KSr2yTdu1AI&dimension=a1jCssI2LkW.Ewi7FUfcHAD&dimension=a1jCssI2LkW.fctSQp5nAYl&stage=a1jCssI2LkW&startDate="+req.query.d1+"&endDate="+req.query.d2+"&displayProperty=NAME&outputType=ENROLLMENT&desc=enrollmentDate",{ headers: auth } );
   var statusText = response.statusText;
   var status = response.status;
   if (status == "200") {
