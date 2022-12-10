@@ -707,8 +707,7 @@ app.get("/doublon-event", async (req, res) => {
 
 
 app.get("/doublon-eventdd", async (req, res) => {
-  console.log(URLStructure("https://covax.vaksiny.gov.mg/api/29/analytics/",req.query.sortie,req.query.periode,req.query.idOrgUnit,"dimension=a1jCssI2LkW.bbnyNYD1wgS&dimension=a1jCssI2LkW.LUIsbsm3okG&dimension=a1jCssI2LkW.Yp1F4txx8tm&dimension=a1jCssI2LkW.eNRjVGxVL6l&dimension=a1jCssI2LkW.SB1IHYu2xQT&dimension=a1jCssI2LkW.KSr2yTdu1AI&dimension=a1jCssI2LkW.NI0QRzJvQ0k", req.query.outputType, req.query.sort));
-  const response = await fetch(URLStructure("https://covax.vaksiny.gov.mg/api/29/analytics/",req.query.sortie,req.query.periode,req.query.idOrgUnit,"dimension=a1jCssI2LkW.bbnyNYD1wgS&dimension=a1jCssI2LkW.LUIsbsm3okG&dimension=a1jCssI2LkW.Yp1F4txx8tm&dimension=a1jCssI2LkW.eNRjVGxVL6l&dimension=a1jCssI2LkW.SB1IHYu2xQT&dimension=a1jCssI2LkW.KSr2yTdu1AI&dimension=a1jCssI2LkW.NI0QRzJvQ0k", req.query.outputType, req.query.sort),{ headers: { Authorization: `Basic ${Buffer.from( req.query.username + ":" + req.query.password).toString("base64")}`, }, } );
+  const response = await fetch("https://covax.vaksiny.gov.mg/api/29/analytics/events/query/yDuAzyqYABS.json?dimension=ou:"+req.query.idOrgUnit+"&dimension=a1jCssI2LkW.bbnyNYD1wgS&dimension=a1jCssI2LkW.LUIsbsm3okG&dimension=a1jCssI2LkW.Yp1F4txx8tm&dimension=a1jCssI2LkW.eNRjVGxVL6l&dimension=a1jCssI2LkW.SB1IHYu2xQT&dimension=a1jCssI2LkW.KSr2yTdu1AI&dimension=a1jCssI2LkW.NI0QRzJvQ0k&stage=a1jCssI2LkW&startDate="+req.query.d1+"&endDate="+req.query.d2+"&displayProperty=NAME&outputType=EVENT&desc=eventDate",{ headers: { Authorization: `Basic ${Buffer.from( req.query.username + ":" + req.query.password).toString("base64")}`, }, } );
   if (response.status == "200") 
   {
     var s = (await response.json()).rows;
