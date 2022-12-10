@@ -796,7 +796,7 @@ app.get("/NA-enrollmentdd", async (req, res) => {
 });
 
 
-app.get("/NA-enrollmentdd", async (req, res) => {
+app.get("/NA-enrollment", async (req, res) => {
   var query = req.query;
   var username = query.username; 
   var password = query.password; 
@@ -853,6 +853,64 @@ app.get("/NA-event", async (req, res) => {
   var url = "https://covax.vaksiny.gov.mg/api/29/analytics/";
   const response = await fetch(
     URLStructure(url, sortie, periode, idOrgUnit, columns, outputType, sort),
+    { headers: auth }
+  );
+  var statusText = response.statusText;
+  var status = response.status;
+  if (status == "200") {
+    var data = await response.json();
+    var height = data.height;
+    var headers = [
+      "Unite d'organisation",
+      "Nom de vaccin",
+      "Numero de dose",
+      "Numero de lot",
+      "Nom",
+      "Prenom",
+      "CODE_EPI",
+    ];
+    var NA = [];
+    NA.push([]);
+    for (var i = 0; i < height; i++) {
+      if (
+        data.rows[i][12].replace(/\s/g, "").trim().length == 0 ||
+        data.rows[i][13].replace(/\s/g, "").trim().length == 0 ||
+        data.rows[i][14].replace(/\s/g, "").trim().length == 0
+      ) {
+        NA.push([
+          data.rows[i][10],
+          data.rows[i][13],
+          data.rows[i][14],
+          data.rows[i][15],
+          data.rows[i][16],
+          data.rows[i][17],
+          data.rows[i][18],
+        ]);
+      }
+    }
+    https: res.json({
+      statusText: statusText,
+      status: status,
+      data: NA.sort((a, b) => (a[0] > b[0] ? 1 : -1)),
+      headers: headers,
+    });
+  } else {
+    https: res.json({
+      statusText: statusText,
+      status: status,
+    });
+  }
+});
+
+
+app.get("/NA-eventdd", async (req, res) => {
+  var query = req.query;
+  var username = query.username; //"Nosybe"
+  var password = query.password; //"2021@Covax"
+   var credentials = Buffer.from(username + ":" + password).toString("base64");
+  var auth = { Authorization: `Basic ${credentials}` };
+  var url = "https://covax.vaksiny.gov.mg/api/29/analytics/";
+  const response = await fetch("https://covax.vaksiny.gov.mg/api/29/analytics/events/query/yDuAzyqYABS.json?dimension=ou:"+req.query.idOrgUnit+"&dimension=a1jCssI2LkW.bbnyNYD1wgS&dimension=a1jCssI2LkW.LUIsbsm3okG&dimension=a1jCssI2LkW.Yp1F4txx8tm&dimension=a1jCssI2LkW.eNRjVGxVL6l&dimension=a1jCssI2LkW.SB1IHYu2xQT&dimension=a1jCssI2LkW.KSr2yTdu1AI&stage=a1jCssI2LkW&startDate="+req.query.d1+"&endDate="+req.query.d2+"&displayProperty=NAME&outputType=EVENT&desc=eventDate",
     { headers: auth }
   );
   var statusText = response.statusText;
