@@ -761,7 +761,42 @@ app.get("/doublon-eventdd", async (req, res) => {
 });
 
 
-app.get("/NA-enrollment", async (req, res) => {
+app.get("/NA-enrollmentdd", async (req, res) => {
+  var query = req.query;
+  var username = query.username; 
+  var password = query.password; 
+  var credentials = Buffer.from(username + ":" + password).toString("base64");
+  var auth = { Authorization: `Basic ${credentials}` };
+  var url = "https://covax.vaksiny.gov.mg/api/29/analytics/";
+  const response = await fetch("https://covax.vaksiny.gov.mg/api/29/analytics/enrollments/query/yDuAzyqYABS.json?dimension=ou:"+req.query.idOrgUnit+"&dimension=a1jCssI2LkW.eNRjVGxVL6l&dimension=a1jCssI2LkW.SB1IHYu2xQT&dimension=a1jCssI2LkW.NI0QRzJvQ0k&dimension=a1jCssI2LkW.LY2bDXpNvS7&dimension=a1jCssI2LkW.oindugucx72&dimension=a1jCssI2LkW.KSr2yTdu1AI&dimension=a1jCssI2LkW.Ewi7FUfcHAD&dimension=a1jCssI2LkW.fctSQp5nAYl&stage=a1jCssI2LkW&startDate="+req.query.d1+"&endDate="+req.query.d2+"&displayProperty=NAME&outputType=ENROLLMENT&desc=enrollment",{ headers: auth } );
+  var statusText = response.statusText;
+  var status = response.status;
+  if (status == "200") {
+    var data = await response.json();
+    var headers = [ "Unite d'organisation","Nom","Prenom","Date de naissance","Type de cible","sexe","CODE_EPI","CIN","TEL",];
+    var height = data.height;
+    var NA = [];
+    NA.push([]);
+    for (var i = 0; i < height; i++) {
+      if (data.rows[i][12].replace(/\s/g, "").trim().length == 0 || data.rows[i][13].replace(/\s/g, "").trim().length == 0 || data.rows[i][14].replace(/\s/g, "").trim().length == 0) {
+        if (data.rows[i][13].replace(/\s/g, "").trim().length != 0) {
+          if (parseInt(data.rows[i][13].replace(/\s/g, "").trim()) == 1) { data.rows[i][13] = "Agent de santé"; }
+          if (parseInt(data.rows[i][13].replace(/\s/g, "").trim()) == 2) { data.rows[i][13] = "Force de l'ordre"; }
+          if (parseInt(data.rows[i][13].replace(/\s/g, "").trim()) == 3) { data.rows[i][13] = "Personne âgée"; }
+          if (parseInt(data.rows[i][13].replace(/\s/g, "").trim()) == 4) { data.rows[i][13] = "Travailleurs sociaux"; }
+          if (parseInt(data.rows[i][13].replace(/\s/g, "").trim()) == 5) { data.rows[i][13] = "Autres"; }
+        }
+        NA.push([data.rows[i][7],data.rows[i][10],data.rows[i][11],data.rows[i][12],data.rows[i][13],data.rows[i][14],data.rows[i][15],data.rows[i][16],data.rows[i][17],]);
+      }
+    }
+    https: res.json({ statusText: statusText,status: status,data: NA.sort((a, b) => (a[0] > b[0] ? 1 : -1)),headers: headers,});
+  } else {
+    https: res.json({ statusText: statusText, status: status, });
+  }
+});
+
+
+app.get("/NA-enrollmentdd", async (req, res) => {
   var query = req.query;
   var username = query.username; 
   var password = query.password; 
