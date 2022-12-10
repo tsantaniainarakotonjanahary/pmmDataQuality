@@ -751,7 +751,7 @@ app.get("/doublon-eventdd", async (req, res) => {
     https: res.json({
       statusText: response.statusText,
       status: response.status,
-      data: s,
+      data: s.length == 1 ? [] : s ,
       headers: [ "Unite d'organisation", "Nom de vaccin", "Numero de dose", "Numero de lot", "Nom", "Prenom", "EPI","Date de Naissance"],
     });
   } else {
