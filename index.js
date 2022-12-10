@@ -635,7 +635,7 @@ app.get("/doublon-enrollmentdd", async (req, res) => {
     https: res.json({
       statusText: response.statusText,
       status: response.status,
-      data: s,
+      data: s.length == 1 ? [] : s ,
       headers: ["Unité d'organisation","Nom","Prénom","Date de naissance ","Type de cible","Sexe","CODE_EPI","CIN","TEL", ],
     });
   } else {
