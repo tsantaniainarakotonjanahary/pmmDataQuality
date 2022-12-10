@@ -631,7 +631,6 @@ app.get("/doublon-enrollmentdd", async (req, res) => {
       }
     }
 
-    var length = s.unshift(["","","","","","","","",""]);
 
     https: res.json({
       statusText: response.statusText,
