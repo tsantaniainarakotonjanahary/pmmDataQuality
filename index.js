@@ -746,8 +746,6 @@ app.get("/doublon-eventdd", async (req, res) => {
       }
     }
 
-    var length = s.unshift(["","","","","","","","",""]);
-
     https: res.json({
       statusText: response.statusText,
       status: response.status,
