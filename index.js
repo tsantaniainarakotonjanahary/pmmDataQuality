@@ -78,7 +78,21 @@ app.get("/region",(req,res) => {
       res.json(result.rows);
     });
   });
-  
+})
+
+
+app.get("/toValidate",(req,res) => {
+  pool.connect(function(err, clients, done) {
+    if(err) {
+      return console.error('error fetching client from pool', err);
+    }
+    clients.query("select *  from users where isvalidate = 0;", function(err, result) 
+    {
+      done();
+      if(err) { return console.error('error running query', err); }
+      res.json(result.rows);
+    });
+  });
 })
 
 const saltRounds = 10 ; 
