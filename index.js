@@ -81,12 +81,25 @@ app.get("/region",(req,res) => {
 })
 
 
-app.get("/toValidate",(req,res) => {
+app.get("/tovalidate",(req,res) => {
   pool.connect(function(err, clients, done) {
     if(err) {
       return console.error('error fetching client from pool', err);
     }
     clients.query("select *  from users where isvalidate = 0;", function(err, result) 
+    {
+      done();
+      if(err) { return console.error('error running query', err); }
+      res.json(result.rows);
+    });
+  });
+})
+
+
+app.get("/validate",(req,res) => {
+  pool.connect(function(err, clients, done) {
+    if(err) { return console.error('error fetching client from pool', err); }
+    clients.query("update users set isvalidate = 0 where id = '"+req.query.id+"' ;", function(err, result) 
     {
       done();
       if(err) { return console.error('error running query', err); }
