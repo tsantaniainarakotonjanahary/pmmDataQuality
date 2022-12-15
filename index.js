@@ -140,9 +140,7 @@ app.post("/login",(req,res) => {
   {
     if(err) { console.log(err); }
     pool.connect(function(err, clients, done) {
-      if(err) {
-        return console.error('error fetching client from pool', err);
-      }
+      if(err) { return console.error('error fetching client from pool', err); }
       clients.query("select * from users where username = '"+username+"'  and  isvalidate = 1;", function(err, result) 
       {
         done();
@@ -160,7 +158,7 @@ app.post("/login",(req,res) => {
               {
                 req.session.user = result.rows;
               }
-              res.json({auth : true , token , result : result.rows , message : "ok" });
+              res.json({ auth : true , token , result : result.rows , message : "ok" });
             }
             else 
             {
@@ -170,7 +168,41 @@ app.post("/login",(req,res) => {
         }
         else 
         {
-          res.send({message:"user doesn't exist"});
+          pool.connect(function(err, clients, done) {
+            if(err) {
+              return console.error('error fetching client from pool', err);
+            }
+            clients.query("select * from superuser where username = '"+username+"' ", function(err, result) 
+            {
+              done();
+              if(err) { return console.error('error running query', err); }
+
+              if(result.rows.length > 0)
+              {
+                bcrypt.compare(password,result.rows[0].password , (error,response) => {
+                  if(response)
+                  {
+                    const id = result.rows[0].id;
+                    const token = jwt.sign({id},"tsanta",{ expiresIn : 300, });
+                    console.log(req.session);
+                    if(req.session.user)
+                    {
+                      req.session.user = result.rows;
+                    }
+                    res.json({ auth : true , token , result : result.rows , message : "admin" });
+                  }
+                  else 
+                  {
+                    res.send({message:"wrong unsername/password combination"});
+                  }
+                })
+              }
+              else 
+              {
+                res.send({message:"user doesn't exist"});
+              }     
+            });
+          });
         }
       });
     });
