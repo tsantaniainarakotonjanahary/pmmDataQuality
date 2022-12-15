@@ -82,13 +82,15 @@ app.post("/register",(req,res)=>{
     if(err) {
       console.log(err);
     }
-
+    console.log("hello1");
     pool.connect(function(err, clients, done) {
       if(err) {
         return console.error('error fetching client from pool', err);
       }
+      console.log("hello2");
       clients.query("INSERT INTO users (username,password,isValidate) values ("+username+","+hash+",0) ", function(err, result) 
       {
+        console.log("Hello3");
         done();
         if(err) { return console.error('error running query', err); }
         res.json(result.rows);
