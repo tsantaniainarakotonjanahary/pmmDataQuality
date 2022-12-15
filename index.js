@@ -386,7 +386,7 @@ app.post('/addCentre',async (req,res) => {
   });
 })
 
-app.get('updateCentre',async (req,res) => {
+app.post('updateCentre',async (req,res) => {
   pool.connect(function(err, clients, done) {
     if(err) { return console.error('error fetching client from pool', err); }
     console.log("update centrelevel5 set name = '"+req.body.nom+"' dhis2id='"+req.body.dhis2id+"' parentid = '"+req.body.idCommune+"'  geometry = '("+req.body.longitude+","+req.body.latitude+")' image = '"+req.body.image+"'  where id = "+req.query.id+" ");
