@@ -72,6 +72,36 @@ app.get("/region",(req,res) => {
   
 })
 
+const saltRounds = 10 ; 
+
+app.post("/register",(req,res)=>{
+  const username = req.body.username;
+  const password = req.body.password;
+  brypt.hash(password,saltRounds, (err,hash) => 
+  {
+    if(err) {
+      console.log(err);
+    }
+
+    pool.connect(function(err, clients, done) {
+      if(err) {
+        return console.error('error fetching client from pool', err);
+      }
+      clients.query("INSERT INTO users (username,password,isValidate) values ("+username+","+hash+",0) ", function(err, result) 
+      {
+        done();
+        if(err) { return console.error('error running query', err); }
+        res.json(result.rows);
+      });
+
+    });
+
+
+  });
+
+});
+
+
 
 app.get("/districtbyregion",(req,res) => {
   pool.connect(function(err, clients, done) {
