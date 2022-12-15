@@ -8,6 +8,8 @@ app.use(express.json());
 app.use(cors());
 app.get("/taste", async (req, res) => res.json({val : "Bienvenue welcome!!!!!" }));
 
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 /*
 const { MongoClient } = require('mongodb');
