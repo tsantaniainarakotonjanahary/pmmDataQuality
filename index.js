@@ -160,7 +160,7 @@ app.post("/login",(req,res) => {
               {
                 req.session.user = result.rows;
               }
-              res.json({auth : true , token , result : result.rows });
+              res.json({auth : true , token , result : result.rows , message : "ok" });
             }
             else 
             {
