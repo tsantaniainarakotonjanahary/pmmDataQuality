@@ -2,6 +2,7 @@ const express = require("express");
 const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fetch(...args));
 const cors = require("cors");
 const process = require('process');
+const session = require('express-session');
 var pg = require('pg');
 const app = express();
 app.use(express.json());
@@ -10,6 +11,12 @@ app.get("/taste", async (req, res) => res.json({val : "Bienvenue welcome!!!!!" }
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+
+app.use(session({
+  secret: 'hello',
+  resave: false,
+  saveUninitialized: true
+}));
 
 /*
 const { MongoClient } = require('mongodb');
@@ -76,34 +83,98 @@ app.get("/region",(req,res) => {
 
 const saltRounds = 10 ; 
 
-app.post("/register",(req,res)=>{
+app.post("/register",(req,res) => {
+  const name = req.body.name;
   const username = req.body.username;
   const password = req.body.password;
-  console.log({username,password});
   bcrypt.hash(password,saltRounds, (err,hash) => 
   {
-    if(err) {
-      console.log(err);
-    }
-    console.log("hello1");
+    if(err) { console.log(err); }
     pool.connect(function(err, clients, done) {
       if(err) {
         return console.error('error fetching client from pool', err);
       }
-      console.log("hello2");
-      clients.query("INSERT INTO users (username,password,isValidate) values ("+username+","+hash+",0) ", function(err, result) 
+      clients.query("INSERT INTO users (name,username,password,isValidate) values ('"+name+"','"+username+"','"+hash+"',0) ", function(err, result) 
       {
-        console.log("Hello3");
         done();
         if(err) { return console.error('error running query', err); }
         res.json(result.rows);
       });
-
     });
-
-
   });
+});
 
+const verifyJWT = (req,res,next) => {
+  const token = req.headers["x-access-token"];
+  console.log(token);
+  if(!token)
+  {
+    res.send("you need token");
+  }else 
+  {
+    jwt.verify( token, "tsanta" , (err,decoded) => {
+      if(err)
+      {
+        res.json({ auth:false, message : "You failed to authenticate" })
+      }
+      else 
+      {
+        req.userId = decoded.id;
+        next();
+      }
+    })
+  }
+}
+
+app.get("/isUserAuth", verifyJWT , (req,res) => {
+  res.send("you are autheticated");
+})
+
+
+app.post("/login",(req,res) => {
+
+  const username = req.body.username;
+  const password = req.body.password;
+
+  bcrypt.hash(password,saltRounds, (err,hash) => 
+  {
+    if(err) { console.log(err); }
+    pool.connect(function(err, clients, done) {
+      if(err) {
+        return console.error('error fetching client from pool', err);
+      }
+      clients.query("select * from users where username = '"+username+"'  and  isvalidate = 1;", function(err, result) 
+      {
+        done();
+        if(err) { return console.error('error running query', err); }
+        if(result.rows.length > 0 )
+        {
+          bcrypt.compare(password,result.rows[0].password , (error,response) => {
+            if(response)
+            {
+              console.log(result.rows);
+              const id = result.rows[0].id;
+              const token = jwt.sign({id},"tsanta",{ expiresIn : 300, });
+              console.log(req.session);
+              if(req.session.user)
+              {
+                req.session.user = result.rows;
+              }
+              res.json({auth : true , token , result : result.rows });
+            }
+            else 
+            {
+              res.send({message:"wrong unsername/password combination"});
+            }
+          })
+        }
+        else 
+        {
+          res.send({message:"user doesn't exist"});
+        }
+      });
+    });
+  });
 });
 
 
@@ -474,7 +545,7 @@ app.get("/astraRecu", async (req,res)=> {
 /*app.get("checkDoublantEnrollment/",async (req,res) => 
 {
   
-})*/
+})
 
 
 app.get("/login",async (req,res) => 
@@ -500,6 +571,7 @@ app.get("/login",async (req,res) =>
       https: res.json({ s , status : 401 });
     }
 })
+*/
 
 app.get("/doublon-enrollment", async (req, res) => {
   console.log(URLStructure("https://covax.vaksiny.gov.mg/api/29/analytics/",req.query.sortie,req.query.periode,req.query.idOrgUnit,"dimension=a1jCssI2LkW.eNRjVGxVL6l&dimension=a1jCssI2LkW.SB1IHYu2xQT&dimension=a1jCssI2LkW.NI0QRzJvQ0k&dimension=a1jCssI2LkW.LY2bDXpNvS7&dimension=a1jCssI2LkW.oindugucx72&dimension=a1jCssI2LkW.KSr2yTdu1AI&dimension=a1jCssI2LkW.Ewi7FUfcHAD&dimension=a1jCssI2LkW.fctSQp5nAYl",req.query.outputType,req.query.sort));
