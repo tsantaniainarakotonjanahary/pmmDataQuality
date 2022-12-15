@@ -77,7 +77,7 @@ const saltRounds = 10 ;
 app.post("/register",(req,res)=>{
   const username = req.body.username;
   const password = req.body.password;
-  brypt.hash(password,saltRounds, (err,hash) => 
+  bcrypt.hash(password,saltRounds, (err,hash) => 
   {
     if(err) {
       console.log(err);
