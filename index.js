@@ -81,9 +81,10 @@ app.get("/region",(req,res) => {
 })
 
 
-app.get("/tovalidate",(req,res) => {
+app.get("/tovalidate", (req,res) => {
   pool.connect(function(err, clients, done) {
-    if(err) {
+    if(err) 
+    {
       return console.error('error fetching client from pool', err);
     }
     clients.query("select *  from users where isvalidate = 0;", function(err, result) 
@@ -96,10 +97,23 @@ app.get("/tovalidate",(req,res) => {
 })
 
 
-app.get("/validate",(req,res) => {
+app.get("/validate", (req,res) => {
   pool.connect(function(err, clients, done) {
     if(err) { return console.error('error fetching client from pool', err); }
     clients.query("update users set isvalidate = 1 where id = '"+req.query.id+"' ;", function(err, result) 
+    {
+      done();
+      if(err) { return console.error('error running query', err); }
+      res.json(result.rows);
+    });
+  });
+})
+
+
+app.get("/decline",(req,res) => {
+  pool.connect(function(err, clients, done) {
+    if(err) { return console.error('error fetching client from pool', err); }
+    clients.query("delete from  users where id = '"+req.query.id+"' ;", function(err, result) 
     {
       done();
       if(err) { return console.error('error running query', err); }
@@ -364,6 +378,19 @@ app.post('/addCentre',async (req,res) => {
   pool.connect(function(err, clients, done) {
     if(err) { return console.error('error fetching client from pool', err); }
     clients.query("insert into centrelevel5(level,name,dhis2id,parentid,geometry,image) values (5,'"+req.body.nom+"','"+req.body.dhis2id+"','"+req.body.idCommune+"','("+req.body.longitude+","+req.body.latitude+")','"+req.body.image+"')", function(err, result) 
+    {
+      done();
+      if(err) { return console.error('error running query', err); }
+      res.json(result.rows);
+    });
+  });
+})
+
+app.get('updateCentre',async (req,res) => {
+  pool.connect(function(err, clients, done) {
+    if(err) { return console.error('error fetching client from pool', err); }
+    console.log("update centrelevel5 set name = '"+req.body.nom+"' dhis2id='"+req.body.dhis2id+"' parentid = '"+req.body.idCommune+"'  geometry = '("+req.body.longitude+","+req.body.latitude+")' image = '"+req.body.image+"'  where id = "+req.query.id+" ");
+    clients.query("update centrelevel5 set name = '"+req.body.nom+"' dhis2id='"+req.body.dhis2id+"' parentid = '"+req.body.idCommune+"'  geometry = '("+req.body.longitude+","+req.body.latitude+")' image = '"+req.body.image+"'  where id = "+req.query.id+" ", function(err, result) 
     {
       done();
       if(err) { return console.error('error running query', err); }
