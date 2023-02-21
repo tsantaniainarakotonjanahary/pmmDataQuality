@@ -1036,7 +1036,7 @@ app.get("/DisponibiliteDeVaccinRoutine", async (req,res) =>
       }
     );
     var s = await response.json();
-    res.json(s.rows);
+    res.json(s);
 })
 
 
