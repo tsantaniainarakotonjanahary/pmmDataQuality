@@ -1031,7 +1031,7 @@ app.get("/NA-enrollment", async (req, res) => {
 
 app.get("/DisponibiliteDeVaccinRoutine", async (req,res) => 
 {
-    const response = await fetch("https://ministere-sante.mg/api/29/analytics.json?dimension=pe:LAST_MONTH&dimension=dx:JTfvT0DrBvz;Nm1qAOpMbDX;ip8qeFyILRB;sYVDf23mZsg;d7jhJrTl6ig;LdkpYulBjdW;HGALcAqspdR;ebV6IUA6Xwk;GkEv4YDqZ40&filter=ou:jrFvjsPtJrT&displayProperty=NAME&outputIdScheme=NAME",{
+    const response = await fetch("https://ministere-sante.mg/api/29/analytics.json?dimension=pe:LAST_MONTH&dimension=dx:JTfvT0DrBvz;Nm1qAOpMbDX;ip8qeFyILRB;sYVDf23mZsg;d7jhJrTl6ig;LdkpYulBjdW;HGALcAqspdR;ebV6IUA6Xwk;GkEv4YDqZ40&filter=ou:"+req.query.ou+"&displayProperty=NAME&outputIdScheme=NAME",{
         headers: { Authorization: `Basic ${Buffer.from( "Scorcard" + ":" + "D@shb0ard" ).toString("base64")}`, },
       }
     );
