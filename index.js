@@ -1041,7 +1041,7 @@ app.get("/DisponibiliteDeVaccinRoutine", async (req,res) =>
 
 app.get("/DisponibiliteDeVaccinCovax", async (req,res) => 
 {
-    const response = await fetch("https://covax.vaksiny.gov.mg/api/29/analytics.json?dimension=dx:TPW8h9OYSkS;aSDvXnavplO;ziprLDlyUDf;ulBHnoeCEkm;zqTS3RiSL3o;K4UPUEDKFZJ;RkC5nQeFp1f;Kkbt3LgbCbD&dimension=pe:LAST_MONTH&filter=ou:"+req.query.ou+"&displayProperty=NAME&outputIdScheme=NAME",{
+    const response = await fetch("https://covax.vaksiny.gov.mg/api/29/analytics.json?dimension=dx:TPW8h9OYSkS;aSDvXnavplO;ziprLDlyUDf;ulBHnoeCEkm;zqTS3RiSL3o;K4UPUEDKFZJ;RkC5nQeFp1f;Kkbt3LgbCbD&dimension=pe:LAST_MONTH&filter=ou:p1FaH8uyiOZ&displayProperty=NAME&outputIdScheme=NAME",{
         headers: { Authorization: `Basic ${Buffer.from( "Nosybe" + ":" + "2021@Covax" ).toString("base64")}`, },
       }
     );
