@@ -1049,6 +1049,16 @@ app.get("/DisponibiliteDeVaccinCovax", async (req,res) =>
     res.json(s);
 })
 
+app.get("/StockFinalCovid", async (req,res) => 
+{
+    const response = await fetch("https://covax.vaksiny.gov.mg/api/29/analytics.json?dimension=pe:LAST_MONTH&dimension=dx:LWmmFCXgUmg;hJKdezT5GcK;f6JAIJEpHpe;OJUzxCAcudW;D20DogInJTS&filter=ou:"+req.query.ou+"&displayProperty=NAME&outputIdScheme=NAME",{
+        headers: { Authorization: `Basic ${Buffer.from( "Scorcard" + ":" + "D@shb0ard" ).toString("base64")}`, },
+      }
+    );
+    var s = await response.json();
+    res.json(s);
+})
+
 
 app.get("/NA-event", async (req, res) => {
   var query = req.query;
