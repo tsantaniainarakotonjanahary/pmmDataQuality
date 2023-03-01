@@ -1031,7 +1031,7 @@ app.get("/NA-enrollment", async (req, res) => {
 
 app.get("/DisponibiliteDeVaccinRoutine", async (req,res) => 
 {
-    const response = await fetch("https://ministere-sante.mg/api/29/analytics.json?dimension=pe:LAST_3_MONTHS&dimension=dx:JTfvT0DrBvz;Nm1qAOpMbDX;ip8qeFyILRB;sYVDf23mZsg;d7jhJrTl6ig;LdkpYulBjdW;HGALcAqspdR;ebV6IUA6Xwk;GkEv4YDqZ40&filter=ou:"+req.query.ou+"&displayProperty=NAME&outputIdScheme=NAME",{
+    const response = await fetch("https://ministere-sante.mg/api/29/analytics.json?dimension=pe:202301&dimension=dx:JTfvT0DrBvz;Nm1qAOpMbDX;ip8qeFyILRB;sYVDf23mZsg;d7jhJrTl6ig;LdkpYulBjdW;HGALcAqspdR;ebV6IUA6Xwk;GkEv4YDqZ40&filter=ou:"+req.query.ou+"&displayProperty=NAME&outputIdScheme=NAME",{
         headers: { Authorization: `Basic ${Buffer.from( "Scorcard" + ":" + "D@shb0ard" ).toString("base64")}`, },
       }
     );
@@ -1041,7 +1041,7 @@ app.get("/DisponibiliteDeVaccinRoutine", async (req,res) =>
 
 app.get("/DisponibiliteDeVaccinCovax", async (req,res) => 
 {
-    const response = await fetch("https://covax.vaksiny.gov.mg/api/29/analytics.json?dimension=dx:TPW8h9OYSkS;aSDvXnavplO;ziprLDlyUDf;ulBHnoeCEkm;zqTS3RiSL3o;K4UPUEDKFZJ;RkC5nQeFp1f;Kkbt3LgbCbD&dimension=pe:LAST_3_MONTHS&filter=ou:"+req.query.ou+"&displayProperty=NAME&outputIdScheme=NAME",{
+    const response = await fetch("https://covax.vaksiny.gov.mg/api/29/analytics.json?dimension=dx:TPW8h9OYSkS;aSDvXnavplO;ziprLDlyUDf;ulBHnoeCEkm;zqTS3RiSL3o;K4UPUEDKFZJ;RkC5nQeFp1f;Kkbt3LgbCbD&dimension=pe:202301&filter=ou:"+req.query.ou+"&displayProperty=NAME&outputIdScheme=NAME",{
         headers: { Authorization: `Basic ${Buffer.from( "Nosybe" + ":" + "2021@Covax" ).toString("base64")}`, },
       }
     );
@@ -1051,7 +1051,7 @@ app.get("/DisponibiliteDeVaccinCovax", async (req,res) =>
 
 app.get("/StockFinalCovid", async (req,res) => 
 {
-    const response = await fetch("https://covax.vaksiny.gov.mg/api/29/analytics.json?dimension=pe:LAST_3_MONTHS&dimension=dx:LWmmFCXgUmg;hJKdezT5GcK;f6JAIJEpHpe;OJUzxCAcudW;D20DogInJTS&filter=ou:"+req.query.ou+"&displayProperty=NAME&outputIdScheme=NAME",{
+    const response = await fetch("https://covax.vaksiny.gov.mg/api/29/analytics.json?dimension=pe:202301&dimension=dx:LWmmFCXgUmg;hJKdezT5GcK;f6JAIJEpHpe;OJUzxCAcudW;D20DogInJTS&filter=ou:"+req.query.ou+"&displayProperty=NAME&outputIdScheme=NAME",{
         headers: { Authorization: `Basic ${Buffer.from( "Scorcard" + ":" + "D@shb0ard" ).toString("base64")}`, },
       }
     );
