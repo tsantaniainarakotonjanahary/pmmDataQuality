@@ -1059,6 +1059,16 @@ app.get("/StockFinalCovid", async (req,res) =>
     res.json(s);
 })
 
+app.get("/NombreTotalDesPersonneVaccine", async (req,res) => 
+{
+    const response = await fetch("https://covax.vaksiny.gov.mg/api/29/analytics.json?dimension=dx:vr6nXFKkVGH&dimension=ou:"+req.query.ou+"&startDate=2021-05-02&endDate=2023-03-28&displayProperty=NAME&outputIdScheme=NAME",{
+        headers: { Authorization: `Basic ${Buffer.from(  "Nosybe" + ":" + "2021@Covax"  ).toString("base64")}`, },
+      }
+    );
+    var s = await response.json();
+    res.json(s);
+})
+
 
 app.get("/NA-event", async (req, res) => {
   var query = req.query;
