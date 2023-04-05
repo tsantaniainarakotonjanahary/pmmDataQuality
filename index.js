@@ -736,6 +736,7 @@ app.get("/doublon-enrollment", async (req, res) => {
     }
 
     var length = s.unshift(["","","","","","","","",""]);
+    s = removeDuplicatesByEPI(s);
 
     https: res.json({
       statusText: response.statusText,
@@ -750,7 +751,15 @@ app.get("/doublon-enrollment", async (req, res) => {
     });
   }
 });
-
+const removeDuplicatesByEPI = (data) => {
+  const epiCounts = new Map();
+  data.forEach(record => {
+    const epiCode = record[6];
+    epiCounts.set(epiCode, (epiCounts.get(epiCode) || 0) + 1);
+  });
+  const noDuplicates = data.filter(record => epiCounts.get(record[6]) === 1);
+  return noDuplicates;
+};
 
 app.get("/doublon-enrollmentdd", async (req, res) => {
   const response = await fetch("https://covax.vaksiny.gov.mg/api/29/analytics/enrollments/query/yDuAzyqYABS.json?dimension=ou:"+req.query.idOrgUnit+"&dimension=a1jCssI2LkW.eNRjVGxVL6l&dimension=a1jCssI2LkW.SB1IHYu2xQT&dimension=a1jCssI2LkW.NI0QRzJvQ0k&dimension=a1jCssI2LkW.LY2bDXpNvS7&dimension=a1jCssI2LkW.oindugucx72&dimension=a1jCssI2LkW.KSr2yTdu1AI&dimension=a1jCssI2LkW.Ewi7FUfcHAD&dimension=a1jCssI2LkW.fctSQp5nAYl&stage=a1jCssI2LkW&startDate="+req.query.d1+"&endDate="+req.query.d2+"&displayProperty=NAME&outputType=ENROLLMENT&desc=enrollmentDate",
