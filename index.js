@@ -412,6 +412,50 @@ app.get("/getregion",(req,res) => {
 })
 
 
+
+function convertToPolygon(geometry) {
+  const { type, coordinates } = geometry;
+
+  let coords;
+  if (type === "Polygon") {
+    coords = coordinates[0];
+  } else if (type === "MultiPolygon") {
+    coords = coordinates.flat(2);
+  } else {
+    throw new Error("Invalid geometry type");
+  }
+
+  return coords.map((coord) => {
+    return { lat: coord[1], lng: coord[0] };
+  });
+}
+
+app.get("/geom/:ou", async (req,res) => {
+  async function fetchCovaxData() {
+    const url = new URL("https://covax.vaksiny.gov.mg/api/29/organisationUnits.json?fields=id,name,shortName,openingDate,closedDate,geometry,featureType&attribute=PUBLIC_PRIVATE&filter=id:eq:"+req.params.ou);
+    const basicAuth = btoa(`${'Nosybe'}:${'2021@Covax'}`);
+    console.log(url.toString());
+    const response = await fetch(url.toString(), {
+      headers: {
+        'Authorization': `Basic ${basicAuth}`,
+        'Content-Type': 'application/json'
+      }
+    });
+  
+    if (response.ok) {
+       const data = await response.json(); 
+       const geometry = data.organisationUnits[0].geometry;
+        const polygon = convertToPolygon(geometry);
+       res.json(polygon); 
+    } else {
+      console.error(`Error: - ${response.statusText}`);
+    }
+  } 
+   await fetchCovaxData();
+})
+
+
+
 app.get("/getdistrict",(req,res) => {
   pool.connect(function(err, clients, done) {
     if(err) { return console.error('error fetching client from pool', err); }
