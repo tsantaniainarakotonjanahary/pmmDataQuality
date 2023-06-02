@@ -671,6 +671,50 @@ app.get("/astraRecu", async (req,res)=> {
   res.json(s);
 })
 
+app.get("/ougroup", async (req,res)=> {
+  const response = await fetch("https://covax.vaksiny.gov.mg/api/29/organisationUnits.json?fields=id,name,level,ancestors[id,name,level]&attribute=PUBLIC_PRIVATE&filter=level:eq:5&pageSize=4652",
+    {
+      headers: {
+        Authorization: `Basic ${Buffer.from(
+          "Nosybe" + ":" + "2021@Covax"
+        ).toString("base64")}`,
+      },
+    }
+  );
+  
+  var s = await response.json();
+
+  var transformedData = s.organisationUnits.map((unit, index) => {
+    return {
+      total: s.pager.total,
+      centreid: index + 1, // assuming that centreid is an incremental value starting from 1
+      centrelevel: unit.level,
+      centrename: unit.name,
+      centredhis2id: unit.id,
+      centreparentid: unit.ancestors[unit.ancestors.length - 1]?.id || null,
+      centregeometry: null,
+      communeid: index + 1, // assuming that communeid is an incremental value starting from 1
+      communelevel: unit.ancestors[3]?.level || null,
+      communename: unit.ancestors[3]?.name || null,
+      communedhis2id: unit.ancestors[3]?.id || null,
+      communeparentid: unit.ancestors[2]?.id || null,
+      districtid: index + 1, // assuming that districtid is an incremental value starting from 1
+      districtlevel: unit.ancestors[2]?.level || null,
+      districtname: unit.ancestors[2]?.name || null,
+      districtdhis2id: unit.ancestors[2]?.id || null,
+      districtparentid: unit.ancestors[1]?.id || null,
+      regionid: index + 1, // assuming that regionid is an incremental value starting from 1
+      regionlevel: unit.ancestors[1]?.level || null,
+      regionname: unit.ancestors[1]?.name || null,
+      regiondhis2id: unit.ancestors[1]?.id || null,
+      regionparentid: unit.ancestors[0]?.id || null
+    };
+  });
+
+  res.json(transformedData);
+});
+
+
 
 /*app.get("checkDoublantEnrollment/",async (req,res) => 
 {
