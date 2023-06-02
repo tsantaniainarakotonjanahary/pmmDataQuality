@@ -671,6 +671,20 @@ app.get("/astraRecu", async (req,res)=> {
   res.json(s);
 })
 
+
+function calculateCentroid(coordinates) {
+  let totalX = 0;
+  let totalY = 0;
+  const numPoints = coordinates[0].length;
+
+  for (let i = 0; i < numPoints; i++) {
+    totalX += coordinates[0][i][0];
+    totalY += coordinates[0][i][1];
+  }
+  
+  return {x: totalX / numPoints, y: totalY / numPoints};
+}
+
 app.get("/ougroup", async (req,res)=> {
   const response = await fetch("https://covax.vaksiny.gov.mg/api/29/organisationUnits.json?fields=id,name,level,geometry,ancestors[id,name,level]&attribute=PUBLIC_PRIVATE&filter=level:eq:5&pageSize=4652",
     {
@@ -682,9 +696,20 @@ app.get("/ougroup", async (req,res)=> {
     }
   );
   
-  var s = await response.json();
+  const s = await response.json();
 
-  var transformedData = s.organisationUnits.map((unit, index) => {
+  const transformedData = s.organisationUnits.map((unit, index) => {
+    let centregeometry = null;
+    
+    if(unit.geometry) {
+      if(unit.geometry.type === "Point") {
+        centregeometry = {"x": unit.geometry.coordinates[0], "y": unit.geometry.coordinates[1]};
+ 
+      } else if(unit.geometry.type === "Polygon") {
+        centregeometry = calculateCentroid(unit.geometry.coordinates);
+      }
+    }
+    
     return {
       total: s.pager.total,
       centreid: index + 1, // assuming that centreid is an incremental value starting from 1
@@ -692,7 +717,7 @@ app.get("/ougroup", async (req,res)=> {
       centrename: unit.name,
       centredhis2id: unit.id,
       centreparentid: unit.ancestors[unit.ancestors.length - 1]?.id || null,
-      centregeometry: null,
+      centregeometry: centregeometry,
       communeid: index + 1, // assuming that communeid is an incremental value starting from 1
       communelevel: unit.ancestors[3]?.level || null,
       communename: unit.ancestors[3]?.name || null,
@@ -708,7 +733,7 @@ app.get("/ougroup", async (req,res)=> {
       regionname: unit.ancestors[1]?.name || null,
       regiondhis2id: unit.ancestors[1]?.id || null,
       regionparentid: unit.ancestors[0]?.id || null
-    };
+    }
   });
 
   res.json(transformedData);
