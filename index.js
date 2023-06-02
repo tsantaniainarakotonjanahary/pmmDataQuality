@@ -672,7 +672,7 @@ app.get("/astraRecu", async (req,res)=> {
 })
 
 app.get("/ougroup", async (req,res)=> {
-  const response = await fetch("https://covax.vaksiny.gov.mg/api/29/organisationUnits.json?fields=id,name,level,ancestors[id,name,level]&attribute=PUBLIC_PRIVATE&filter=level:eq:5&pageSize=4652",
+  const response = await fetch("https://covax.vaksiny.gov.mg/api/29/organisationUnits.json?fields=id,name,level,geometry,ancestors[id,name,level]&attribute=PUBLIC_PRIVATE&filter=level:eq:5&pageSize=4652",
     {
       headers: {
         Authorization: `Basic ${Buffer.from(
